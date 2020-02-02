@@ -1,3 +1,15 @@
+// ==UserScript==
+// @name         Messenger Browser GTE
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        *://www.messenger.com/t/*
+// @grant        none
+// @downloadURL  https://raw.githubusercontent.com/hans-m-song/BrowserGTE/master/index.js
+// updateURL     https://raw.githubusercontent.com/hans-m-song/BrowserGTE/master/index.js
+// ==/UserScript==
+
 window.initBrowserGTE = () => {
     console.log('initcustomgte')
 
