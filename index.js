@@ -13,10 +13,28 @@
 window.initBrowserGTE = () => {
     console.log('initcustomgte')
 
-    const emoteIds = {
-        LUL: '425618',
-        Jebaited: '114836',
-        NotLikeThis: '58765',
+    const emotes = {
+        'Kappa': '25',
+        'DansGame': '33',
+        'SwiftRage': '34',
+        'Kreygasm': '41',
+        'BibleThump': '86',
+        'PogChamp': '88',
+        'ResidentSleeper': '245',
+        '4Head': '354',
+        'FailFish': '360',
+        'BabyRage': '22639',
+        'WutFace': '28087',
+        'KappaPride': 55338,
+        'NotLikeThis': '58765',
+        'SeemsGood': 64138,
+        'KappaRoss': 70433,
+        'cmonBruh': 84608,
+        'Jebaited': '114836',
+        'CoolStoryBob': 123171,
+        'LUL': '425618',
+        'PowerUpR': 425671,
+        'PowerUpL': 425688,
     };
 
     const img = (name, id) => `<img
@@ -39,13 +57,13 @@ window.initBrowserGTE = () => {
         >`;
 
     const applyEmotesToMessage = (message) => {
-        Object.keys(emoteIds)
+        Object.keys(emotes)
             .forEach(name => {
-                 const matcher = new RegExp(name, "g");
-                 if (matcher.test(message.innerText)) {
-                     message.innerHTML = message.innerHTML
-                         .replace(matcher, img(name, emoteIds[name]));
-                 }
+                const matcher = new RegExp(name, "g");
+                if (matcher.test(message.innerText)) {
+                    message.innerHTML = message.innerHTML
+                        .replace(matcher, img(name, emotes[name]));
+                }
             });
     };
 
@@ -77,7 +95,7 @@ window.initBrowserGTE = () => {
     return {
         interval,
         cancel,
-        emoteIds,
+        emotes,
         img,
         applyEmotesToMessage,
         getMessageSpans,
