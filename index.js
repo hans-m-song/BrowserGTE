@@ -25,16 +25,16 @@ window.initBrowserGTE = () => {
         'FailFish': '360',
         'BabyRage': '22639',
         'WutFace': '28087',
-        'KappaPride': 55338,
+        'KappaPride': '55338',
         'NotLikeThis': '58765',
-        'SeemsGood': 64138,
-        'KappaRoss': 70433,
-        'cmonBruh': 84608,
+        'SeemsGood': '64138',
+        'KappaRoss': '70433',
+        'cmonBruh': '84608',
         'Jebaited': '114836',
-        'CoolStoryBob': 123171,
+        'CoolStoryBob': '123171',
         'LUL': '425618',
-        'PowerUpR': 425671,
-        'PowerUpL': 425688,
+        'PowerUpR': '425671',
+        'PowerUpL': '425688',
     };
 
     const img = (name, id) => `<img
