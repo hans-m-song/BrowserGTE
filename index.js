@@ -7,7 +7,7 @@
 // @match        *://www.messenger.com/t/*
 // @grant        none
 // @downloadURL  https://raw.githubusercontent.com/hans-m-song/BrowserGTE/master/index.js
-// updateURL     https://raw.githubusercontent.com/hans-m-song/BrowserGTE/master/index.js
+// @updateURL     https://raw.githubusercontent.com/hans-m-song/BrowserGTE/master/index.js
 // ==/UserScript==
 
 window.initBrowserGTE = () => {
@@ -37,7 +37,7 @@ window.initBrowserGTE = () => {
         'PowerUpL': '425688',
     };
 
-    const img = (name, id) => `<img
+    const img = (name, id) => ` <img
         class="GTEEmote"
         src="https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0"
         alt="${name}"
@@ -54,12 +54,12 @@ window.initBrowserGTE = () => {
             padding: 0px !important;
             z-index: auto !important;
             visibility: visible !important;"
-        >`;
+        > `;
 
     const applyEmotesToMessage = (message) => {
         Object.keys(emotes)
             .forEach(name => {
-                const matcher = new RegExp(name, "g");
+                const matcher = new RegExp(`(^|\\s)${name}($|\\s)`, "g");
                 if (matcher.test(message.innerText)) {
                     message.innerHTML = message.innerHTML
                         .replace(matcher, img(name, emotes[name]));
@@ -88,7 +88,7 @@ window.initBrowserGTE = () => {
 
     const interval = setInterval(() => {
         run();
-    }, 2000);
+    }, 1000);
 
     const cancel = () => clearInterval(interval);
 
