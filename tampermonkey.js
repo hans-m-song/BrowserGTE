@@ -6,9 +6,7 @@
 // @author       You
 // @match        *://www.messenger.com/t/*
 // @grant        GM.setValue
-// @grant        GM.listValues
 // @grant        GM.getValue
-// @grant        GM.deleteValue
 // @downloadURL  https://raw.githubusercontent.com/hans-m-song/BrowserGTE/master/index.js
 // @updateURL    https://raw.githubusercontent.com/hans-m-song/BrowserGTE/master/index.js
 // ==/UserScript==
