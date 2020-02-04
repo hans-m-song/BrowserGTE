@@ -4,7 +4,8 @@
     "description": "Twitch emotes in messenger",
     "permissions": [
         "storage",
-        "activeTab"
+        "activeTab",
+        "declarativeContent"
     ],
     "background": {
         "scripts": [
@@ -12,8 +13,15 @@
         ],
         "persistent": false
     },
-    "page_action": {
-        "default_popup": "popup.html"
-    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.messenger.com/t/*"
+            ],
+            "js": [
+                "script.js"
+            ]
+        }
+    ],
     "manifest_version": 2
 }
