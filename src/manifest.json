@@ -16,10 +16,11 @@
     "content_scripts": [
         {
             "matches": [
-                "https://www.messenger.com/t/*"
+                "*://*.messenger.com/t/*"
             ],
+            "run_at": "document_idle",
             "js": [
-                "script.js"
+                "content_script.js"
             ]
         }
     ],

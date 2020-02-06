@@ -6,7 +6,9 @@ const CHANNELS = {
 };
 
 const SELECTORS = {
-    CONTAINER: 'div[aria-label=Messages] > div[id^=js_]',
+    MAIN: 'div[role=main]',
+    CONVERSATIONS: 'div[aria-label=Conversations]',
+    MESSAGES: 'div[aria-label=Messages] > div[id^=js_]',
     SPANS: 'div[data-tooltip-content][data-hover=tooltip] div[aria-label] span',
 };
 
@@ -36,7 +38,9 @@ const GLOBALEMOTES = {
     ]
 };
 
-const MESSAGETYPE = Object.freeze({
+const MESSAGETYPES = Object.freeze({
+    'DEBUG': 'DEBUG',
+    'INFO': 'INFO',
     'PROCESS': 'PROCESS',
 });
 
@@ -44,5 +48,5 @@ module.exports = {
     CHANNELS,
     SELECTORS,
     GLOBALEMOTES,
-    MESSAGETYPE,
+    MESSAGETYPES,
 };
