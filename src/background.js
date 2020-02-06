@@ -1,5 +1,5 @@
 const { storage } = require('./utils');
-const send = require('./message').background;
+const { background: send, compose } = require('./message');
 const { MESSAGETYPES } = require('./constants');
 
 chrome.runtime.onInstalled.addListener(() => {

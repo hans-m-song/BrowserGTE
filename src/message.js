@@ -9,4 +9,4 @@ const content_script = (header, data) => new Promise((resolve) =>
     chrome.runtime.sendMessage(compose(header, 'content_script', data), (response) => 
         resolve(response)));
 
-module.exports = { background, content_script};
+module.exports = { background, content_script, compose };
