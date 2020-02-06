@@ -10,9 +10,13 @@ Chrome/Chromium only
  2. `npm install`
  3. go
  
+ `npm run compile` to compile
+ 
  `npm run watch` to compile automatically
  
  `npm run release` to prepare for deployment
+ 
+ `npm run clean` to clear compiled files
 
 ## Deployment
 
