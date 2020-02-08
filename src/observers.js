@@ -1,5 +1,5 @@
 const { waitForEl } = require('./utils');
-const { send, compose } = require('./message').content_script;
+const { send } = require('./message').content_script;
 const { MESSAGETYPES, SELECTORS } = require('./constants');
 
 let messages;
@@ -13,13 +13,11 @@ class Observer {
 
     async observe(target) {
         if (target) {
-            console.log('observing', target);
             this.observer.observe(target, this.options);
             return Promise.resolve(this);
         }
 
         const element = await waitForEl(this.target);
-        console.log('observing found element', element);
         this.observer.observe(element, this.options);
         return this;
     }
@@ -44,7 +42,6 @@ class Observer {
 class MessageObserver extends Observer {
 
     constructor() {
-        console.log('message observer');
         super({
             target: SELECTORS.MESSAGES,
             options: { childList: true, subtree: true }
@@ -86,7 +83,7 @@ class MessageObserver extends Observer {
 
     async applyToSpans(spans) {
         const spanTransformList = spans.map(async span => {
-            const response = await send(MESSAGETYPES.PROCESS, span.innerText);
+            const response = await send(MESSAGETYPES.MESSAGE.RAW, span.innerText);
             span.innerHTML = response.data;
         });
 
@@ -98,7 +95,6 @@ class MessageObserver extends Observer {
 class ConversationObserver extends Observer {
 
     constructor() {
-        console.log('conversation observer');
         super({
             target: SELECTORS.CONVERSATIONS,
             options: { attributes: true, subtree: true }

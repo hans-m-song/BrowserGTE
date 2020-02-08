@@ -4,22 +4,6 @@ const createURL = {
     storage: (type, name) => `MTE.${type}.${name}`,
 };
 
-const promisify = (func, data) => {
-    console.log(func, data);
-    return new Promise((resolve, reject) =>
-        chrome.storage.sync[func](data, (result) => chrome.runtime.lastError
-            ? reject(chrome.runtime.lastError)
-            : resolve(result)));
-}
-
-const storage = {
-    set: (data) => promisify('set', data),
-    get: (key) => promisify('get', key),
-    list: () => promisify('get', null),
-    remove: (key) => promisify('remove', key),
-    clear: () => promisify('clear'),
-};
-
 const waitForEl = (selector, interval = 100) => new Promise(resolve => {
     const intervalHandle = setInterval(() => {
         const element = document.querySelector(selector);
@@ -30,8 +14,25 @@ const waitForEl = (selector, interval = 100) => new Promise(resolve => {
     }, interval);
 });
 
+const createImg = (name, id, src) => ` <img
+    src="${src}"
+    alt="${name}"
+    style="
+        display: inline !important;
+        height: auto !important;
+        width: auto !important;
+        max-height: 100% !important;
+        opacity: 1 !important;
+        outline: 0px !important;
+        border: 0px !important;
+        margin: 0px !important;
+        padding: 0px !important;
+        z-index: auto !important;
+        visibility: visible !important;"
+    > `;
+
 module.exports = {
     createURL,
-    storage,
     waitForEl,
+    createImg,
 };
