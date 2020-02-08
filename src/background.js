@@ -6,8 +6,8 @@ const { MESSAGETYPES } = require('./constants');
 chrome.runtime.onInstalled.addListener(() => {
     loadData()
         .then((data) => {
+            console.log('loaded data', data)
             const parser = new Parser(data);
-            console.log(parser);
 
             chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const logLevel = message.level;
@@ -15,6 +15,7 @@ chrome.runtime.onInstalled.addListener(() => {
                 // TODO handle adding new channels, custom emotes, etc
                 switch (message.header) {
                     case MESSAGETYPES.MESSAGE.RAW: {
+                        console.log('received', message);
                         const result = parser.process(message.data);
                         sendResponse(compose(MESSAGETYPES.MESSAGE.PROCESSED, result));
                         break;

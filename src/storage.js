@@ -2,6 +2,7 @@ const { TWITCHGLOBALEMOTES, CHANNELS } = require('./constants');
 const { createURL } = require('./utils');
 
 const promisify = (func, data) => {
+    console.log(func, data);
     return new Promise((resolve, reject) =>
         chrome.storage.sync[func](data, (result) => chrome.runtime.lastError
             ? reject(chrome.runtime.lastError)
@@ -19,7 +20,7 @@ const storage = {
 const updateChannelData = async (name, id) => {
     const endpoint = createURL.channel(id);
 
-    const response = await fetch(endpoint); // TODO handle exceptions
+    const response = await fetch(endpoint, { mode: 'no-cors' }); // TODO handle exceptions
     const data = await response.json();
 
     const storableObject = { [createURL.storage('channel', name)]: data };
@@ -43,7 +44,7 @@ const loadData = async () => {
     if (!storageData[globalEmoteStorageURL]) {
         await storage.set(TWITCHGLOBALEMOTES);
     }
-    storageData[globalEmoteStorageURL] = TWITCHGLOBALEMOTES;
+    Object.assign(storageData, TWITCHGLOBALEMOTES);
 
     await Promise.all(pendingRequests);
     return storageData;

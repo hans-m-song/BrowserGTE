@@ -1,4 +1,4 @@
-const { waitForEl } = require('./utils');
+const { waitForEl, delay } = require('./utils');
 const { send } = require('./message').content_script;
 const { MESSAGETYPES, SELECTORS } = require('./constants');
 
@@ -46,9 +46,11 @@ class MessageObserver extends Observer {
             target: SELECTORS.MESSAGES,
             options: { childList: true, subtree: true }
         });
+        console.log('messageobserver initialized');
     }
 
     async start() {
+        await delay();
         await this.manual();
         await super.start();
         return this;
@@ -82,8 +84,11 @@ class MessageObserver extends Observer {
     }
 
     async applyToSpans(spans) {
+        console.log('processing spans', spans);
         const spanTransformList = spans.map(async span => {
-            const response = await send(MESSAGETYPES.MESSAGE.RAW, span.innerText);
+            await delay();
+            const response = await send(MESSAGETYPES.MESSAGE.RAW, span.innerHTML);
+            console.log('response', response);
             span.innerHTML = response.data;
         });
 
@@ -102,6 +107,7 @@ class ConversationObserver extends Observer {
 
         this.messageObserver = new MessageObserver();
         this.messageObserver.start();
+        console.log('conversationobserver initialized');
     }
 
     async subscriber(mutations) {
@@ -109,6 +115,7 @@ class ConversationObserver extends Observer {
             .filter(mutation => mutation.attributeName === 'tabindex');
 
         if (conversationMutations.length > 0) {
+            console.log('conversation mutation', conversationMutations);
             await this.messageObserver.restart();
         }
     }
