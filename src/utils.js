@@ -19,7 +19,18 @@ const storage = {
     clear: () => promisify('clear'),
 };
 
+const waitForEl = (selector, interval = 100) => new Promise(resolve => {
+    const intervalHandle = setInterval(() => {
+        const element = document.querySelector(selector);
+        if (element) {
+            clearInterval(intervalHandle);
+            resolve(element);
+        }
+    }, interval);
+});
+
 module.exports = {
     url,
     storage,
+    waitForEl,
 };

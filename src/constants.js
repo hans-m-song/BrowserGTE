@@ -12,13 +12,6 @@ const SELECTORS = {
     SPANS: 'div[data-tooltip-content][data-hover=tooltip] div[aria-label] span',
 };
 
-const OBSERVERCONFIG = {
-    MESSAGES: {
-        childList: true,
-        subtree: true
-    },
-}
-
 const GLOBALEMOTES = {
     emotes: [
         { code: "Kappa", id: 25 },
@@ -54,7 +47,6 @@ const MESSAGETYPES = Object.freeze({
 module.exports = {
     CHANNELS,
     SELECTORS,
-    OBSERVERCONFIG,
     GLOBALEMOTES,
     MESSAGETYPES,
 };
