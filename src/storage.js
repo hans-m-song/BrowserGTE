@@ -28,26 +28,25 @@ const updateChannelData = async (name, id) => {
     return storableObject;
 };
 
-const loadGlobalTwitchEmotesData = async () => {
-    await storage.set(TWITCHGLOBALEMOTES);
-    return TWITCHGLOBALEMOTES;
-};
-
 const loadData = async () => {
     const storageData = await storage.list();
 
     const pendingRequests = Object.keys(CHANNELS)
         .map(async (name) => {
-            if (!storageData[createURL.storage('channel', name)]) { // TODO refetch if time delta exceeds threshold
-                const data = await updateChannelData(name, CHANNELS[name]);
+            const storageURL = createURL.storage('channel', name);
+            if (!storageData[storageURL]) { // TODO refetch if time delta exceeds threshold
+                storageData[storageURL] = await updateChannelData(name, CHANNELS[name]);
             }
         });
 
-    if (!storageData[createURL.storage('channel', 'TWITCHGLOBALEMOTES')]) {
-        pendingRequests.push(loadGlobalTwitchEmotesData());
+    const globalEmoteStorageURL = createURL.storage('channel', 'TWITCHGLOBALEMOTES');
+    if (!storageData[globalEmoteStorageURL]) {
+        await storage.set(TWITCHGLOBALEMOTES);
+        storageData[globalEmoteStorageURL] = TWITCHGLOBALEMOTES;
     }
 
-    return await Promise.all(pendingRequests);
+    await Promise.all(pendingRequests);
+    return storageData;
 };
 
 module.exports = {

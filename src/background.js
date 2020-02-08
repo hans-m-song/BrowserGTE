@@ -7,23 +7,18 @@ chrome.runtime.onInstalled.addListener(() => {
     loadData()
         .then((data) => {
             const parser = new Parser(data);
+            console.log(parser);
 
             chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const logLevel = message.level;
         
+                // TODO handle adding new channels, custom emotes, etc
                 switch (message.header) {
                     case MESSAGETYPES.MESSAGE.RAW: {
                         const result = parser.process(message.data);
                         sendResponse(compose(MESSAGETYPES.MESSAGE.PROCESSED, result));
                         break;
                     };
-                    case MESSAGETYPES.MESSAGE.PROCESSED:
-                    case MESSAGETYPES.FETCH.REQUEST: {
-                        // TODO handle this if needed
-                    };
-                    case MESSAGETYPES.FETCH.RESPONSE:
-                    case MESSAGETYPES.ACK:
-                    case MESSAGETYPES.NACK:
                     default: {
                         console[logLevel]('unhandled message', message, sender);
                         sendResponse(compose(MESSAGETYPES.NACK));

@@ -52,12 +52,25 @@ const MESSAGETYPES = Object.freeze({
     'ACK': 'ACK',
     'NACK': 'NACK',
     'FETCH': {
-        'REQUEST': 'REQUEST',
-        'RESPONSE': 'RESPONSE',
+        'REQUEST': 'FETCH.REQUEST',
+        'RESPONSE': 'FETCH.RESPONSE',
     },
     'MESSAGE': {
         'RAW': 'MESSAGE.RAW',
         'PROCESSED': 'MESSAGE.PROCESSED',
+    },
+    'OPTIONS': {
+        'SET': 'OPTIONS.SET',
+        'GET': 'OPTIONS.GET',
+    },
+    'CHANNEL': {
+        'UPDATE': 'CHANNEL.UPDATE',
+        'ADD': 'CHANNEL.ADD',
+        'REMOVE': 'CHANNEL.REMOVE',
+    },
+    'EMOTE': {
+        'ADD': 'EMOTE.ADD',
+        'REMOVE': 'EMOTE.REMOVE',
     },
 });
 

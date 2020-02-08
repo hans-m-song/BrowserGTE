@@ -1,11 +1,34 @@
+const { createURL, createImg, createRgx } = require('./utils');
+
+class Emote {
+
+    constructor(code, id, src) {
+        this.code = code;
+        this.id = `${id}`;
+        this.src = src;
+        this.rgx = createRgx(this.code);
+        this.element = createImg(this.code, this.src);
+    }
+
+    test(value) {
+        return this.rgx.test(value);
+    }
+}
+
 class Channel {
 
     constructor(data) {
-
+        this.id = data.channel_id;
+        this.name = data.channel_name;
+        this.emotes = data.emotes
+            .map(emote => new Emote(emote.code, emote.id, createURL.emote(emote.id)));
     }
 
     process(message) {
-        return message;
+        return this.emotes
+            .reduce((builder, emote) => emote.test(builder)
+                ? builder.replace(emote.rgx, emote.element)
+                : builder, message);
     }
 
 }

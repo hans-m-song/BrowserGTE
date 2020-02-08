@@ -14,10 +14,8 @@ const waitForEl = (selector, interval = 100) => new Promise(resolve => {
     }, interval);
 });
 
-const createImg = (name, id, src) => ` <img
-    src="${src}"
-    alt="${name}"
-    style="
+const createImg = (code, src) => 
+    ` <img src="${src}" alt="${code} "style="
         display: inline !important;
         height: auto !important;
         width: auto !important;
@@ -31,8 +29,11 @@ const createImg = (name, id, src) => ` <img
         visibility: visible !important;"
     > `;
 
+const createRgx = (code) => new RegExp(`(^|\\s)${code}($|\\s)`, 'g');
+
 module.exports = {
     createURL,
     waitForEl,
     createImg,
+    createRgx,
 };

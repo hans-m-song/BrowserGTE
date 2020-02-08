@@ -7,13 +7,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const logLevel = message.level;
 
     switch (message.header) {
-        case MESSAGETYPES.MESSAGE.RAW:
-        case MESSAGETYPES.MESSAGE.PROCESSED:
-        case MESSAGETYPES.FETCH.REQUEST:
-        case MESSAGETYPES.FETCH.RESPONSE:
-        case MESSAGETYPES.ACK:
-        case MESSAGETYPES.NACK:
-        case MESSAGETYPES.REQUEST:
         default: {
             console[logLevel]('unhandled message', message, sender);
             sendResponse(compose(MESSAGETYPES.NACK));
