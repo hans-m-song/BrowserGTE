@@ -1,6 +1,7 @@
-const url = {
+const createURL = {
     channel: (id) => `https://api.twitchemotes.com/api/v4/channels/${id}`,
     emote: (id) => `https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0`,
+    storage: (type, name) => `MTE.${type}.${name}`,
 };
 
 const promisify = (func, data) => {
@@ -30,7 +31,7 @@ const waitForEl = (selector, interval = 100) => new Promise(resolve => {
 });
 
 module.exports = {
-    url,
+    createURL,
     storage,
     waitForEl,
 };
