@@ -30,7 +30,7 @@ const createImg = (code, src) =>
         visibility: visible !important;"
     > `;
 
-const createRgx = (code) => new RegExp(`(^|\\s)${code}($|\\s)`, 'g');
+const createRgx = (code) => new RegExp(`(^|\\s|>)${code}($|\\s|<)`, 'g');
 
 const delay = (timeout = 500) => 
     new Promise((resolve) => 

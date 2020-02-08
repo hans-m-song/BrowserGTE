@@ -76,7 +76,7 @@ class MessageObserver extends Observer {
 
         const allSpans = Array.from(messages.querySelectorAll(SELECTORS.SPANS));
         const spans = allSpans
-            .slice(allSpans.length - limit, allSpans.length);
+            // .slice(allSpans.length - limit, allSpans.length);
 
         await this.applyToSpans(spans);
 
