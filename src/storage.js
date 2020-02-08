@@ -42,8 +42,8 @@ const loadData = async () => {
     const globalEmoteStorageURL = createURL.storage('channel', 'TWITCHGLOBALEMOTES');
     if (!storageData[globalEmoteStorageURL]) {
         await storage.set(TWITCHGLOBALEMOTES);
-        storageData[globalEmoteStorageURL] = TWITCHGLOBALEMOTES;
     }
+    storageData[globalEmoteStorageURL] = TWITCHGLOBALEMOTES;
 
     await Promise.all(pendingRequests);
     return storageData;
