@@ -5,7 +5,7 @@
     "permissions": [
         "storage",
         "activeTab",
-        "declarativeContent"
+        "https://api.twitchemotes.com/*"
     ],
     "background": {
         "scripts": [

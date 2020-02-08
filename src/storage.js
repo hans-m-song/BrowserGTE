@@ -20,7 +20,7 @@ const storage = {
 const updateChannelData = async (name, id) => {
     const endpoint = createURL.channel(id);
 
-    const response = await fetch(endpoint, { mode: 'no-cors' }); // TODO handle exceptions
+    const response = await fetch(endpoint); // TODO handle exceptions
     const data = await response.json();
 
     const storableObject = { [createURL.storage('channel', name)]: data };
