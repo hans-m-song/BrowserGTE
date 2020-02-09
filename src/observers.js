@@ -88,8 +88,12 @@ class MessageObserver extends Observer {
         const spanTransformList = spans.map(async span => {
             await delay();
             const response = await send(MESSAGETYPES.MESSAGE.RAW, span.innerHTML);
-            console.log('response', response);
-            span.innerHTML = response.data;
+            if (response.header === MESSAGETYPES.MESSAGE.PROCESSED) {
+                console.log('applying to span', span, response);
+                span.innerHTML = response.data;
+            } else {
+                console.error('unhandled response type', response.header, response, 'for span', span);
+            }
         });
 
         await Promise.all(spanTransformList);

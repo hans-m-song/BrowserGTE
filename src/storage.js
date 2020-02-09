@@ -36,7 +36,7 @@ const loadData = async () => {
         .map(async (name) => {
             const storageURL = createURL.storage('channel', name);
             if (!storageData[storageURL]) { // TODO refetch if time delta exceeds threshold
-                storageData[storageURL] = await updateChannelData(name, CHANNELS[name]);
+                Object.assign(storageData, await updateChannelData(name, CHANNELS[name]));
             }
         });
 

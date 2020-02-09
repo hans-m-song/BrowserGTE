@@ -72,6 +72,7 @@ const MESSAGETYPES = Object.freeze({
         'ADD': 'EMOTE.ADD',
         'REMOVE': 'EMOTE.REMOVE',
     },
+    'STORAGE': 'STORAGE',
 });
 
 module.exports = {
