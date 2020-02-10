@@ -13,6 +13,7 @@ class Emote {
     test(value) {
         return this.rgx.test(value);
     }
+    
 }
 
 class Channel {

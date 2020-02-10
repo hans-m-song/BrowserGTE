@@ -1,20 +1,24 @@
 const { TWITCHGLOBALEMOTES, CHANNELS } = require('./constants');
 const { createURL } = require('./utils');
 
-const promisify = (func, data) => {
-    console.log(func, data);
-    return new Promise((resolve, reject) =>
-        chrome.storage.sync[func](data, (result) => chrome.runtime.lastError
-            ? reject(chrome.runtime.lastError)
-            : resolve(result)));
-}
+const createStoragePromise = (type = 'sync') =>
+    (func, data) => {
+        console.log(func, data);
+        return new Promise((resolve, reject) =>
+            chrome.storage[type][func](data, (result) => chrome.runtime.lastError
+                ? reject(chrome.runtime.lastError)
+                : resolve(result)));
+    };
 
-const storage = {
-    set: (data) => promisify('set', data),
-    get: (key) => promisify('get', key),
-    list: () => promisify('get', null),
-    remove: (key) => promisify('remove', key),
-    clear: () => promisify('clear'),
+const storage = (type = 'sync') => {
+    const promisify = createStoragePromise(type);
+    return {
+        set: (data) => promisify('set', data),
+        get: (key) => promisify('get', key),
+        list: () => promisify('get', null),
+        remove: (key) => promisify('remove', key),
+        clear: () => promisify('clear'),
+    };
 };
 
 const updateChannelData = async (name, id) => {
@@ -24,13 +28,13 @@ const updateChannelData = async (name, id) => {
     const data = await response.json();
 
     const storableObject = { [createURL.storage('channel', name)]: data };
-    await storage.set(storableObject);
+    await storage().set(storableObject);
 
     return storableObject;
 };
 
 const loadData = async () => {
-    const storageData = await storage.list();
+    const storageData = await storage().list();
 
     const pendingRequests = Object.keys(CHANNELS)
         .map(async (name) => {
@@ -42,7 +46,7 @@ const loadData = async () => {
 
     const globalEmoteStorageURL = createURL.storage('channel', 'TWITCHGLOBALEMOTES');
     if (!storageData[globalEmoteStorageURL]) {
-        await storage.set(TWITCHGLOBALEMOTES);
+        await storage().set(TWITCHGLOBALEMOTES);
     }
     Object.assign(storageData, TWITCHGLOBALEMOTES);
 

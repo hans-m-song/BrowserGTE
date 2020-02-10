@@ -3,7 +3,14 @@ const { MESSAGETYPES, SELECTORS } = require('./constants');
 const { ConversationObserver } = require('./observers');
 const { waitForEl } = require('./utils');
 
-const handleMessage = async (message, sender, sendResponse) => {
+console.log('MTE content_script injected');
+waitForEl(SELECTORS.MAIN)
+    .then(async () => {
+        await waitForEl(SELECTORS.MAIN);
+        await new ConversationObserver().start();
+    });
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const logLevel = message.level;
 
     switch (message.header) {
@@ -12,16 +19,5 @@ const handleMessage = async (message, sender, sendResponse) => {
             sendResponse(compose(MESSAGETYPES.NACK));
         };
     }
-}
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) =>
-    handleMessage(message, sender, sendResponse));
-
-const run = async () => {
-    await waitForEl(SELECTORS.MAIN);
-    await new ConversationObserver().start();
-};
-
-console.log('MTE content_script injected');
-waitForEl(SELECTORS.MAIN)
-    .then(() => run());
+    return true;
+});
