@@ -10,19 +10,7 @@ const waitForEl = (selector, interval = 100) => new Promise(resolve => {
 });
 
 const createImg = (code, src) => 
-    ` <img src="${src}" alt="${code} "style="
-        display: inline !important;
-        height: auto !important;
-        width: auto !important;
-        max-height: 100% !important;
-        opacity: 1 !important;
-        outline: 0px !important;
-        border: 0px !important;
-        margin: 0px !important;
-        padding: 0px !important;
-        z-index: auto !important;
-        visibility: visible !important;"
-    > `;
+    ` <img src="${src}" alt="${code} class="MTEmote"> `;
 
 const createRgx = (code) => new RegExp(`(^|\\s|>)${code}($|\\s|<)`, 'g');
 

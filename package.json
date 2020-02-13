@@ -9,7 +9,7 @@
     "compile:content_script": "browserify src/content_script.js -o dist/content_script.js",
     "compile": "npm run compile:background && npm run compile:content_script",
     "watch": "nodemon",
-    "release": "npm run compile && cp src/manifest.json dist/"
+    "release": "npm run compile && cp src/manifest.json src/style.css dist/"
   },
   "repository": {
     "type": "git",
