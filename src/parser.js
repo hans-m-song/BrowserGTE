@@ -12,6 +12,7 @@ class Parser {
     async init() {
         await Promise.all(this.channels.map((channel) => channel.init()));
         console.log('parser intialized', this);
+        return this;
     }
 
     process(message) {

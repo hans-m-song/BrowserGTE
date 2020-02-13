@@ -17,9 +17,11 @@ const initParser = () => new Promise((resolve) => {
     if (!parser && !initializing) {
         console.log('initializing parser');
         initializing = true;
-        parser = new Parser();
-        parser.init()
-            .then(() => resolve(parser));
+        new Parser().init()
+            .then((initializedParser) => {
+                parser = initializedParser;
+                resolve(initializedParser);
+            });
     } else if (!parser && initializing) {
         console.log('waiting for parser to initialize');
         waitForInit()
