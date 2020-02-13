@@ -31,7 +31,7 @@ const DEFAULT_CONFIG = {
             id: 'vinesauce',
         },
         {
-            name: 'Forsen',
+            name: 'forsen',
             provider: 'BetterTTV',
             id: 'forsen',
         },
@@ -40,6 +40,26 @@ const DEFAULT_CONFIG = {
             provider: 'BetterTTV',
             id: 'opsternarwhallover',
         },
+        {
+            name: 'FrankerFacezGlobal',
+            provider: 'FrankerFacez',
+            id: '__ffz_global',
+        },
+        {
+            name: 'Vinesauce',
+            provider: 'FrankerFacez',
+            id: 'vinesauce',
+        },
+        {
+            name: 'forsen',
+            provider: 'FrankerFacez',
+            id: 'forsen',
+        },
+        {
+            name: 'LerbEbin',
+            provider: 'FrankerFacez',
+            id: 'lerbebin',
+        }
 
     ]
 };

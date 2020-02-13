@@ -3,4 +3,5 @@ module.exports = {
     BetterTTVGlobal: require('./BetterTTVGlobal'),
     TwitchEmotes: require('./TwitchEmotes'),
     TwitchEmotesGlobal: require('./TwitchEmotesGlobal'),
+    FrankerFacez: require('./FrankerFacez'),
 }
