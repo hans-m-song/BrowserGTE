@@ -1,6 +1,3 @@
-const { TWITCHGLOBALEMOTES, CHANNELS } = require('./constants');
-const { createURL } = require('./utils');
-
 const createStoragePromise = (type = 'sync') =>
     (func, data) => {
         console.log(func, data);
@@ -21,41 +18,6 @@ const storage = (type = 'sync') => {
     };
 };
 
-const updateChannelData = async (name, id) => {
-    const endpoint = createURL.channel(id);
-
-    const response = await fetch(endpoint); // TODO handle exceptions
-    const data = await response.json();
-
-    const storableObject = { [createURL.storage('channel', name)]: data };
-    await storage().set(storableObject);
-
-    return storableObject;
-};
-
-const loadData = async () => {
-    const storageData = await storage().list();
-
-    const pendingRequests = Object.keys(CHANNELS)
-        .map(async (name) => {
-            const storageURL = createURL.storage('channel', name);
-            if (!storageData[storageURL]) { // TODO refetch if time delta exceeds threshold
-                Object.assign(storageData, await updateChannelData(name, CHANNELS[name]));
-            }
-        });
-
-    const globalEmoteStorageURL = createURL.storage('channel', 'TWITCHGLOBALEMOTES');
-    if (!storageData[globalEmoteStorageURL]) {
-        await storage().set(TWITCHGLOBALEMOTES);
-    }
-    Object.assign(storageData, TWITCHGLOBALEMOTES);
-
-    await Promise.all(pendingRequests);
-    return storageData;
-};
-
 module.exports = {
     storage,
-    updateChannelData,
-    loadData,
 }

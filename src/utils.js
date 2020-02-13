@@ -1,9 +1,3 @@
-const createURL = {
-    channel: (id) => `https://api.twitchemotes.com/api/v4/channels/${id}`,
-    emote: (id) => `https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0`,
-    storage: (type, name) => `MTE.${type}.${name}`,
-};
-
 const waitForEl = (selector, interval = 100) => new Promise(resolve => {
     const intervalHandle = setInterval(() => {
         const element = document.querySelector(selector);
@@ -37,7 +31,6 @@ const delay = (timeout = 500) =>
         setTimeout(() => resolve(), timeout));
 
 module.exports = {
-    createURL,
     waitForEl,
     createImg,
     createRgx,
