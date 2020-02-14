@@ -1,14 +1,15 @@
 const { storage } = require('../storage');
-const { createEl, createRgx } = require('../utils');
+const { createEmoteEl, createRgx } = require('../utils');
 
 class Emote {
 
-    constructor(code, id, src) {
+    constructor(code, id, src, provider) {
         this.code = code;
         this.id = `${id}`;
         this.src = src;
+        this.provider = provider;
         this.rgx = createRgx(this.code);
-        this.element = createEl(this.code, this.src);
+        this.element = createEmoteEl(this.code, this.src, this.provider);
     }
 
     test(value) {
@@ -76,7 +77,7 @@ class Channel {
 
     // create emote from formatted data emote
     createEmote(emote) {
-        return new Emote(emote.code, emote.id, this.emoteURL(emote.id));
+        return new Emote(emote.code, emote.id, this.emoteURL(emote.id), this.provider);
     }
 
 }
