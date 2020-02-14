@@ -9,8 +9,8 @@ const waitForEl = (selector, interval = 100) => new Promise(resolve => {
     }, interval);
 });
 
-const createImg = (code, src) => 
-    ` <img src="${src}" alt="${code} class="MTEmote"> `;
+const createEl = (code, src) => 
+    ` <div class="MTWrapper"><img src="${src}" alt="${code}" class="MTEmote"><span class="MTTag"> ${code}</span></div> `;
 
 const createRgx = (code) => new RegExp(`(^|\\s|>)${code}($|\\s|<)`, 'g');
 
@@ -20,7 +20,7 @@ const delay = (timeout = 500) =>
 
 module.exports = {
     waitForEl,
-    createImg,
+    createEl,
     createRgx,
     delay,
 };

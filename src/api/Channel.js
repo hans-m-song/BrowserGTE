@@ -1,5 +1,5 @@
 const { storage } = require('../storage');
-const { createImg, createRgx } = require('../utils');
+const { createEl, createRgx } = require('../utils');
 
 class Emote {
 
@@ -8,7 +8,7 @@ class Emote {
         this.id = `${id}`;
         this.src = src;
         this.rgx = createRgx(this.code);
-        this.element = createImg(this.code, this.src);
+        this.element = createEl(this.code, this.src);
     }
 
     test(value) {
