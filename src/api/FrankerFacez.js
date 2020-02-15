@@ -20,7 +20,7 @@ class FrankerFacez extends Channel {
     }
 
     createEmote(emote) {
-        return new Emote(emote.code, emote.id, emote.src);
+        return new Emote(emote.code, emote.id, emote.src, this.provider);
     }
 
 }
