@@ -12,12 +12,19 @@ class Parser {
     async init() {
         await Promise.all(this.channels.map((channel) => channel.init()));
         console.log('parser intialized', this);
+        const compiledEmotes = {};
+        this.channels.forEach((channel) =>
+            channel.emotes.forEach((emote) =>
+                compiledEmotes[emote.code] = emote)); // overwrite duplicate emotes
+        this.emotes = Object.values(compiledEmotes);
         return this;
     }
 
     process(message) {
-        return this.channels
-            .reduce((builder, channel) => channel.process(builder), message);
+        return this.emotes
+            .reduce((builder, emote) => emote.test(builder)
+                ? builder.replace(emote.rgx, `$1${emote.element}$2`)
+                : builder, message);
     }
 
 }

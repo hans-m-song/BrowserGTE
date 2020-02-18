@@ -59,8 +59,67 @@ const DEFAULT_CONFIG = {
             name: 'LerbEbin',
             provider: 'FrankerFacez',
             id: 'lerbebin',
+        },
+        {
+            name: 'garych',
+            provider: 'BetterTTV',
+            id: 'garych'
+        },
+        {
+            name: 'tO_Ot',
+            provider: 'BetterTTV',
+            id: 'tO_Ot'
+        },
+        {
+            name: 'EmJayKae',
+            provider: 'BetterTTV',
+            id: 'emjaykae'
+        },
+        {
+            name: 'helloboat',
+            provider: 'BetterTTV',
+            id: 'helloboat'
+        },
+        {
+            name: 'Wipz',
+            provider: 'BetterTTV',
+            id: 'wipz'
+        },
+        {
+            name: 'PotehtoO',
+            provider: 'BetterTTV',
+            id: 'potehtoo'
+        },
+        {
+            name: 'XxXxXxXxXx420xXxXxXxXxX',
+            provider: 'BetterTTV',
+            id: 'xxxxxxxxxx420xxxxxxxxxx'
+        },
+        {
+            name: 'KingTheTurtle',
+            provider: 'BetterTTV',
+            id: 'kingtheturtle'
+        },
+        {
+            name: 'SarcasmDetected',
+            provider: 'BetterTTV',
+            id: 'sarcasmdetected'
+        },
+        {
+            name: 'Seremendal',
+            provider: 'BetterTTV',
+            id: 'seremendal'
+        },
+        {
+            name: 'zer0_craic',
+            provider: 'BetterTTV',
+            id: 'zer0_craic'
+        },
+        {
+            name: 'onmarked',
+            provider: 'BetterTTV',
+            id: 'onmarked'
         }
-
     ]
 };
 

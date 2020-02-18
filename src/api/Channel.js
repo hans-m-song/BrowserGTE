@@ -58,18 +58,6 @@ class Channel {
         return storageData[this.storagePath];
     }
 
-    // parse and replace mentions of an emote with an image
-    process(message) {
-        if (!this.emotes) {
-            throw new Error(`Channel has not been initialized: ${this.provider}.${this.name}`);
-        }
-
-        return this.emotes
-            .reduce((builder, emote) => emote.test(builder)
-                ? builder.replace(emote.rgx, `$1${emote.element}$2`)
-                : builder, message);
-    }
-
     // formatting data retrieved from endpoint into the form { emotes: Array<{ code: string, id: string }> }
     parseData(data) {
         return { emotes: data.emotes };
