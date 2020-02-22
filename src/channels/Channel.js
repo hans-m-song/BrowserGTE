@@ -17,6 +17,7 @@ class Channel {
     // initialize emotes for this channel
     async init() {
         console.log(`initializing channel ${this.provider}.${this.name}`);
+        
         const data = await this.loadData();
 
         this.emotes = data.emotes
@@ -28,15 +29,18 @@ class Channel {
     async loadData() {
         const endpoint = this.channelURL(this.id);
         const response = await fetch(endpoint);
+        
         if (response.status !== 200) {
             console.warn({
                 message: `Invalid response from fetch`,
-                data: await response.text()
+                data: await response.text(),
             });
             return null;
         }
+        
         const data = await response.json();
         const parsedData = this.parseData(data);
+        
         return parsedData;
     }
 
@@ -50,7 +54,7 @@ class Channel {
         return new Emote({
             ...emote, 
             src: this.emoteURL(emote.id),
-            provider: this.provider
+            provider: this.provider,
         });
     }
 

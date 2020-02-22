@@ -13,36 +13,36 @@ const providers = {
 class ChannelLoader {
 
     constructor(channels) {
-        this.compiledEmotes = {};
         this.channels = channels.map((channel) =>
             new providers[channel.provider](channel));
     }
 
     async init() {
         const data = await storage().list();
-        console.log('stored data', data );
-        if (data.channels) {
-            this.load(data);
+        const channelsToLoad = [];
+        
+        if (!data.channels) {
+            await Promise.all(this.channels.map((channel) => channel.init()));
         } else {
-            await this.download();
+            this.channels.forEach((channel) => {
+                const storedChannel = data.channels[channel.name];
+                if (storedChannel && storedChannel.emotes) {
+                    channel.emotes = storedChannel.emotes.map((emote) =>
+                        channel.createEmote(emote));
+                } else {
+                    channelsToLoad.push(channel.init());
+                }
+            });
+            await Promise.all(channelsToLoad);
+            await this.save();
         }
-        return this;
-    }
 
-    async download() {
-        console.log('downloading channel data');
-        await Promise.all(this.channels.map((channel) => channel.init()));
-        this.channels.forEach((channel) =>
-            channel.emotes.forEach((emote) =>
-                this.compiledEmotes[emote.code] = new Emote(emote)));
-    }
-
-    load(data) {
-        console.log('loading stored data');
-        this.compiledEmotes = data.channels.reduce((emotes, channel) => {
-            channel.emotes.forEach((emote) => emotes[emote.code] = new Emote(emote));
+        this.compiledEmotes = this.channels.reduce((emotes, channel) => {
+            channel.emotes.forEach((emote) => emotes[emote.code] = emote);
             return emotes;
         }, {});
+        
+        return this;
     }
 
     emotes() {
@@ -50,9 +50,14 @@ class ChannelLoader {
     }
 
     async save() {
-        await storage().set({
-            channels: this.channels.map((channel) => channel.toJSON())
-        });
+        const data = { channels: {} };
+
+        this.channels.forEach((channel) =>
+            data.channels[channel.name] = channel.toJSON());
+
+        console.log('storing channel data', data);
+        
+        await storage().set(data);
     }
 
 }

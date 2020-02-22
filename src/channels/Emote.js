@@ -19,8 +19,6 @@ class Emote {
         return {
             code: this.code,
             id: this.id,
-            src: this.src,
-            provider: this.provider,
         };
     }
     

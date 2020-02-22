@@ -9,7 +9,6 @@ class Parser {
     
     async init() {
         await this.channelLoader.init();
-        await this.channelLoader.save();
         this.emotes = this.channelLoader.emotes();
         // TODO settings, custom emotes, etc
         console.log('parser initialized', this);
