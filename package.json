@@ -2,11 +2,11 @@
   "name": "messenger-twitch-emotes",
   "version": "0.0.1",
   "description": "",
-  "main": "src/background.js",
+  "main": "src/background/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "compile:background": "browserify src/background.js -o dist/background.js",
-    "compile:content_script": "browserify src/content_script.js -o dist/content_script.js",
+    "compile:background": "browserify src/background/index.js -o dist/background.js",
+    "compile:content_script": "browserify src/content_script/index.js -o dist/content_script.js",
     "compile": "npm run compile:background && npm run compile:content_script",
     "watch": "nodemon",
     "release": "npm run compile && cp src/manifest.json src/style.css dist/"

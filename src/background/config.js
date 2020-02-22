@@ -62,63 +62,64 @@ const DEFAULT_CONFIG = {
         },
         {
             name: 'garych',
-            provider: 'BetterTTV',
-            id: 'garych'
+            provider: 'BetterTTVChannel',
+            id: '559c3b94a9d6c1121305ff4e'
         },
         {
             name: 'tO_Ot',
-            provider: 'BetterTTV',
-            id: 'tO_Ot'
+            provider: 'BetterTTVChannel',
+            id: '57ea01a4665bcff56f0b64da'
         },
         {
             name: 'EmJayKae',
-            provider: 'BetterTTV',
-            id: 'emjaykae'
+            provider: 'BetterTTVChannel',
+            id: '5537fb2b236a1aa17a9970df'
         },
         {
             name: 'helloboat',
-            provider: 'BetterTTV',
-            id: 'helloboat'
+            provider: 'BetterTTVChannel',
+            id: '558f7862b344e2c42a9e2822'
         },
         {
             name: 'Wipz',
-            provider: 'BetterTTV',
-            id: 'wipz'
+            provider: 'BetterTTVChannel',
+            id: '5584dbe1bf56f8196a1b33e5'
         },
         {
             name: 'PotehtoO',
-            provider: 'BetterTTV',
-            id: 'potehtoo'
+            provider: 'BetterTTVChannel',
+            id: '585f63deceefbe36a00879a7'
         },
+    
         {
             name: 'XxXxXxXxXx420xXxXxXxXxX',
-            provider: 'BetterTTV',
-            id: 'xxxxxxxxxx420xxxxxxxxxx'
+            provider: 'BetterTTVChannel',
+            id: '55fb1c8fb4ccd58c2f985b82'
         },
         {
             name: 'KingTheTurtle',
-            provider: 'BetterTTV',
-            id: 'kingtheturtle'
+            provider: 'BetterTTVChannel',
+            id: '56ba7cd07d1fac4e4aa5e6ad'
         },
         {
             name: 'SarcasmDetected',
-            provider: 'BetterTTV',
-            id: 'sarcasmdetected'
+            provider: 'BetterTTVChannel',
+            id: '562036ca3bf5907e56e39d8b'
         },
         {
             name: 'Seremendal',
-            provider: 'BetterTTV',
-            id: 'seremendal'
+            provider: 'BetterTTVChannel',
+            id: '5927e88930ac523930be1acc'
         },
         {
             name: 'zer0_craic',
-            provider: 'BetterTTV',
-            id: 'zer0_craic'
+            provider: 'BetterTTVChannel',
+            id: '595cfa2b3400d339a35b1540'
         },
         {
             name: 'onmarked',
-            provider: 'BetterTTV',
-            id: 'onmarked'
+            provider: 'BetterTTVChannel',
+            id: '5d4d90919728020aca0dc3fa'
         }
     ]
 };

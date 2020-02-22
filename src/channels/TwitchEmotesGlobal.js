@@ -1,5 +1,4 @@
 const TwitchEmotes = require('./TwitchEmotes');
-const { storage } = require('../storage');
 
 const TWITCHGLOBALEMOTES = {
     emotes: [
@@ -34,14 +33,7 @@ class TwitchEmotesGlobal extends TwitchEmotes {
     }
 
     async loadData() {
-        const storageData = await storage().list();
-
-        if (!storageData[this.storagePath]) {
-            await storage().set({ [this.storagePath]: TWITCHGLOBALEMOTES });
-            return TWITCHGLOBALEMOTES;
-        }
-
-        return storageData[this.storagePath];
+        return TWITCHGLOBALEMOTES;
     }
 
     channelURL(id) {

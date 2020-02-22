@@ -1,4 +1,4 @@
-const { Channel } = require('./Channel');
+const Channel = require('./Channel');
 
 class TwitchEmotes extends Channel {
 

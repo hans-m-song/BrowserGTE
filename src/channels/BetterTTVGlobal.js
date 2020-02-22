@@ -3,7 +3,7 @@ const BetterTTV = require('./BetterTTV');
 class BetterTTVGlobal extends BetterTTV {
 
     constructor(data) {
-        super({ ...data, provider: 'BetterTTV' })
+        super({ ...data, provider: 'BetterTTV' });
     }
 
     channelURL() {

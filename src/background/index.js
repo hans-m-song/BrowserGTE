@@ -1,6 +1,6 @@
-const { compose } = require('./message').background;
-const Parser = require('./parser');
-const { MESSAGETYPES } = require('./constants');
+const { compose } = require('../util/message').background;
+const Parser = require('./Parser');
+const { MESSAGETYPES } = require('../util/constants');
 
 let parser, initializing = false;
 
@@ -17,11 +17,13 @@ const initParser = () => new Promise((resolve) => {
     if (!parser && !initializing) {
         console.log('initializing parser');
         initializing = true;
-        new Parser().init()
+        new Parser()
+            .init()
             .then((initializedParser) => {
                 parser = initializedParser;
                 resolve(initializedParser);
-            });
+            })
+            .catch((error) => console.warn(error));
     } else if (!parser && initializing) {
         console.log('waiting for parser to initialize');
         waitForInit()

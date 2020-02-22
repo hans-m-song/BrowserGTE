@@ -1,6 +1,6 @@
 {
     "name": "Messenger Twitch Emotes",
-    "version": "0.0.7",
+    "version": "0.0.6",
     "description": "Twitch emotes in messenger",
     "permissions": [
         "storage",

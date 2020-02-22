@@ -1,4 +1,5 @@
-const { Channel, Emote } = require('./Channel');
+const Channel = require('./Channel');
+const Emote = require('./Emote');
 
 class FrankerFacez extends Channel {
 
@@ -20,7 +21,10 @@ class FrankerFacez extends Channel {
     }
 
     createEmote(emote) {
-        return new Emote(emote.code, emote.id, emote.src, this.provider);
+        return new Emote({
+            ...emote,
+            provider: this.provider
+        });
     }
 
 }

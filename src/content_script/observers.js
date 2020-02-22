@@ -1,6 +1,6 @@
-const { waitForEl, delay } = require('./utils');
-const { send } = require('./message').content_script;
-const { MESSAGETYPES, SELECTORS } = require('./constants');
+const { waitForEl, delay } = require('../util/utils');
+const { send } = require('../util/message').content_script;
+const { MESSAGETYPES, SELECTORS } = require('../util/constants');
 
 let messages;
 

@@ -1,7 +1,7 @@
-const { compose } = require('./message').content_script;
-const { MESSAGETYPES, SELECTORS } = require('./constants');
+const { compose } = require('../util/message').content_script;
+const { MESSAGETYPES, SELECTORS } = require('../util/constants');
 const { ConversationObserver } = require('./observers');
-const { waitForEl } = require('./utils');
+const { waitForEl } = require('../util/utils');
 
 const createHoverTag = () => {
     const hoverTag = document.createElement('div');
