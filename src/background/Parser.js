@@ -18,7 +18,7 @@ class Parser {
     process(message) {
         return this.emotes
             .reduce((builder, emote) => emote.test(builder)
-                ? builder.replace(emote.rgx, `$1${emote.element}$2`)
+                ? builder.replace(emote.rgx, emote.element)
                 : builder, message);
     }
 

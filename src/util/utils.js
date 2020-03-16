@@ -12,7 +12,7 @@ const waitForEl = (selector, interval = 100) => new Promise(resolve => {
 const createEmoteEl = (code, src, provider) => 
     ` <img src="${src}" alt="${code}" class="MTEmote" mte-data="${provider}: ${code}"> `;
 
-const createRgx = (code) => new RegExp(`(^|\\s|>)${code.replace(/\./g, '\\.')}($|\\s|<)`, 'g');
+const createRgx = (code) => new RegExp(`(?<=(^|\\s|>))${code.replace(/\./g, '\\.')}(?=($|\\s|<))`, 'g');
 
 const delay = (timeout = 500) => 
     new Promise((resolve) => 
