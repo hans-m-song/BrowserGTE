@@ -17,8 +17,8 @@ class Observer {
             return Promise.resolve(this);
         }
 
-        const element = await waitForEl(this.target);
-        this.observer.observe(element, this.options);
+        this.rootNode = await waitForEl(this.target);
+        this.observer.observe(this.rootNode, this.options);
         return this;
     }
 
@@ -58,12 +58,9 @@ class MessageObserver extends Observer {
 
     subscriber(mutations) {
         mutations.forEach((mutation) => {
-            if (mutation.addedNodes.length > 0
-                && mutation.removedNodes.length === 0
-                && mutation.target.tagName === 'DIV'
-                && mutation.addedNodes[0].tagName === 'DIV'
-            ) {
-                const spans = Array.from(mutation.addedNodes[0].querySelectorAll(SELECTORS.SPANS));
+            const node = mutation.addedNodes[0];
+            if (node && node.tagName === 'DIV' && node !== this.rootNode) {
+                const spans = Array.from(node.querySelectorAll(SELECTORS.SPANS));
                 if (spans.length > 0) {
                     this.applyToSpans(spans);
                 }

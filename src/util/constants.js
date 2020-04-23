@@ -2,7 +2,7 @@ const SELECTORS = {
     MAIN: 'div[role=main]',
     CONVERSATIONS: 'div[aria-label=Conversations]',
     MESSAGES: 'div[aria-label=Messages] > div[id^=js_]',
-    SPANS: 'div[data-tooltip-content][data-hover=tooltip] div[aria-label] span',
+    SPANS: '[data-tooltip-content] > div > span',
 };
 
 const LOGLEVEL = Object.freeze({
