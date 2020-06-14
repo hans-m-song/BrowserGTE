@@ -1,5 +1,4 @@
 const { storage } = require('../util/storage');
-const Emote = require('./Emote');
 
 const providers = {
     BetterTTV: require('./BetterTTV'),

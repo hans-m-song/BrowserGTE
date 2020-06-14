@@ -20,8 +20,10 @@ class Channel {
         
         const data = await this.loadData();
 
-        this.emotes = data.emotes
-            .map((emote) => this.createEmote(emote));
+        if (data) {
+            this.emotes = data.emotes
+                .map((emote) => this.createEmote(emote));
+        }
         return this;
     }
 
@@ -31,10 +33,7 @@ class Channel {
         const response = await fetch(endpoint);
         
         if (response.status !== 200) {
-            console.warn({
-                message: `Invalid response from fetch`,
-                data: await response.text(),
-            });
+            console.warn(`Invalid response from fetch at ${endpoint}: ${response.status}, ${await response.text()}`);
             return null;
         }
         

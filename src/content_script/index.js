@@ -26,7 +26,8 @@ waitForEl(SELECTORS.MAIN)
                 hoverTag.style.display = 'none';
             }
         });
-        await new ConversationObserver().start();
+        window.MTEConversationObserver = new ConversationObserver();
+        await MTEConversationObserver.start();
     });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
