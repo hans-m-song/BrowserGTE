@@ -26,6 +26,6 @@
     "@types/chrome": "0.0.93",
     "@types/node": "^13.7.0",
     "browserify": "^16.5.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.4"
   }
 }
