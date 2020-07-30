@@ -1,36 +1,52 @@
-const {LOGLEVEL} = require('./constants');
+import {Header, LogLevel, Sender} from './constants';
 
-const compose = (header, sender, data = {}, level = LOGLEVEL.LOG) => ({
+interface Message {
+  header: Header;
+  sender: Sender;
+  data: unknown;
+  level: LogLevel;
+}
+
+const compose = (
+  header: Header,
+  sender: Sender,
+  data: unknown,
+  level = LogLevel.LOG,
+): Message => ({
   header,
   level,
   sender,
   data,
 });
 
-const background = {
+interface Communication {
+  send: (header: Header, data?: unknown, level?: LogLevel) => Promise<Message>;
+  compose: (header: Header, data?: unknown, level?: LogLevel) => Message;
+}
+
+export const background: Communication = {
   send: (header, data, level) =>
     new Promise((resolve) =>
       chrome.tabs.query({active: true, currentWindow: true}, (tabs) =>
         chrome.tabs.sendMessage(
           tabs[0].id,
-          compose(header, 'background', data, level),
+          compose(header, Sender.Background, data, level),
           (response) => resolve(response),
         ),
       ),
     ),
-  compose: (header, data, level) => compose(header, 'background', data, level),
+  compose: (header, data, level) =>
+    compose(header, Sender.Background, data, level),
 };
 
-const content_script = {
-  send: (header, data, level) =>
+export const contentScript: Communication = {
+  send: (header: Header, data: unknown, level: LogLevel) =>
     new Promise((resolve) =>
       chrome.runtime.sendMessage(
-        compose(header, 'content_script', data, level),
+        compose(header, Sender.ContentScript, data, level),
         (response) => resolve(response),
       ),
     ),
-  compose: (header, data, level) =>
-    compose(header, 'content_script', data, level),
+  compose: (header: Header, data: unknown, level: LogLevel) =>
+    compose(header, Sender.ContentScript, data, level),
 };
-
-module.exports = {background, content_script, compose};

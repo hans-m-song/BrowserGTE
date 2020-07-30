@@ -1,9 +1,19 @@
-const Channel = require('./Channel');
-const Emote = require('./Emote');
+import {Channel} from './Channel';
+import {Emote} from './Emote';
 
-class FrankerFacez extends Channel {
+interface Data {
+  sets: Array<{
+    emoticons: Array<{
+      name: string;
+      id: string;
+      urls: {[key: string]: string};
+    }>;
+  }>;
+}
+
+export class FrankerFacez extends Channel {
   parseData(data) {
-    const emotes = Object.values(data.sets).reduce((emotes, set) => {
+    const emotes = Object.values((data as Data).sets).reduce((emotes, set) => {
       set.emoticons.forEach((emote) =>
         emotes.push({
           code: emote.name,
@@ -12,7 +22,7 @@ class FrankerFacez extends Channel {
         }),
       );
       return emotes;
-    }, []);
+    }, [] as {code: string; id: string; src: string}[]);
     return {emotes};
   }
 
@@ -27,5 +37,3 @@ class FrankerFacez extends Channel {
     });
   }
 }
-
-module.exports = FrankerFacez;

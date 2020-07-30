@@ -1,17 +1,29 @@
-const {waitForEl, delay} = require('../util/utils');
-const {send} = require('../util/message').content_script;
-const {MESSAGETYPES, SELECTORS} = require('../util/constants');
+import {Header, SELECTORS} from '../util/constants';
+import {contentScript} from '../util/message';
+import {delay, waitForEl} from '../util/utils';
 
 let messages;
 
-class Observer {
-  constructor(config) {
-    this.target = config.target;
-    this.options = config.options;
+interface ObserverOptions {
+  target: string;
+  options: MutationObserverInit;
+}
+
+abstract class Observer {
+  target: string;
+  options: MutationObserverInit;
+  observer: MutationObserver;
+  rootNode: Node;
+
+  constructor({target, options}: ObserverOptions) {
+    this.target = target;
+    this.options = options;
     this.observer = new MutationObserver(this.subscriber.bind(this));
   }
 
-  async observe(target) {
+  subscriber(_mutations: MutationRecord[], _observer: MutationObserver): void {}
+
+  async observe(target?: Node) {
     if (target) {
       this.observer.observe(target, this.options);
       return Promise.resolve(this);
@@ -39,7 +51,7 @@ class Observer {
   }
 }
 
-class MessageObserver extends Observer {
+export class MessageObserver extends Observer {
   constructor() {
     super({
       target: SELECTORS.MESSAGES,
@@ -83,8 +95,8 @@ class MessageObserver extends Observer {
     console.log('processing spans', spans);
     const spanTransformList = spans.map(async (span) => {
       await delay();
-      const response = await send(MESSAGETYPES.MESSAGE.RAW, span.innerHTML);
-      if (response.header === MESSAGETYPES.MESSAGE.PROCESSED) {
+      const response = await contentScript.send(Header.RAW, span.innerHTML);
+      if (response.header === Header.PROCESSED) {
         console.log('applying to span', span, response);
         span.innerHTML = response.data;
       } else {
@@ -102,7 +114,9 @@ class MessageObserver extends Observer {
   }
 }
 
-class ConversationObserver extends Observer {
+export class ConversationObserver extends Observer {
+  messageObserver: MessageObserver;
+
   constructor() {
     super({
       target: SELECTORS.CONVERSATIONS,
@@ -125,8 +139,3 @@ class ConversationObserver extends Observer {
     }
   }
 }
-
-module.exports = {
-  ConversationObserver,
-  MessageObserver,
-};

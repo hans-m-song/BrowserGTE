@@ -1,11 +1,11 @@
-const {compose} = require('../util/message').background;
-const Parser = require('./Parser');
-const {MESSAGETYPES} = require('../util/constants');
+import {Header} from '../util/constants';
+import {background} from '../util/message';
+import {Parser} from './Parser';
 
-let parser,
-  initializing = false;
+let parser: Parser;
+let initializing = false;
 
-const waitForInit = () =>
+const waitForInit = (): Promise<Parser> =>
   new Promise((resolve) => {
     const interval = setInterval(() => {
       if (parser) {
@@ -15,7 +15,7 @@ const waitForInit = () =>
     }, 100);
   });
 
-const initParser = () =>
+const initParser = (): Promise<Parser> =>
   new Promise((resolve) => {
     if (!parser && !initializing) {
       console.log('initializing parser');
@@ -42,10 +42,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // TODO handle adding new channels, custom emotes, etc
     try {
       switch (message.header) {
-        case MESSAGETYPES.MESSAGE.RAW: {
+        case Header.RAW: {
           console[logLevel]('message.raw', message);
           const result = parser.process(message.data);
-          sendResponse(compose(MESSAGETYPES.MESSAGE.PROCESSED, result));
+          sendResponse(background.compose(Header.PROCESSED, result));
           break;
         }
         default: {
@@ -59,7 +59,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         JSON.stringify(message),
         sender,
       );
-      sendResponse(compose(MESSAGETYPES.NACK));
+      sendResponse(background.compose(Header.NACK));
     }
   });
 

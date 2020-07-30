@@ -1,6 +1,6 @@
-const Channel = require('./Channel');
+import {Channel} from './Channel';
 
-class BetterTTV extends Channel {
+export class BetterTTV extends Channel {
   constructor(data) {
     super({...data, provider: 'BetterTTV'});
   }
@@ -17,5 +17,3 @@ class BetterTTV extends Channel {
     return {emotes: data.channelEmotes};
   }
 }
-
-module.exports = BetterTTV;

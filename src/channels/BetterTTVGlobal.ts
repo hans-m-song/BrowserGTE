@@ -1,6 +1,6 @@
-const BetterTTV = require('./BetterTTV');
+import {BetterTTV} from './BetterTTV';
 
-class BetterTTVGlobal extends BetterTTV {
+export class BetterTTVGlobal extends BetterTTV {
   constructor(data) {
     super({...data, provider: 'BetterTTV'});
   }
@@ -13,5 +13,3 @@ class BetterTTVGlobal extends BetterTTV {
     return {emotes: data};
   }
 }
-
-module.exports = BetterTTVGlobal;

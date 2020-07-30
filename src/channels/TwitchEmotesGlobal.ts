@@ -1,4 +1,4 @@
-const TwitchEmotes = require('./TwitchEmotes');
+import {TwitchEmotes} from './TwitchEmotes';
 
 const TWITCHGLOBALEMOTES = {
   emotes: [
@@ -26,7 +26,7 @@ const TWITCHGLOBALEMOTES = {
   ],
 };
 
-class TwitchEmotesGlobal extends TwitchEmotes {
+export class TwitchEmotesGlobal extends TwitchEmotes {
   constructor(data) {
     super({...data, provider: 'TwitchEmotes'});
   }
@@ -43,5 +43,3 @@ class TwitchEmotesGlobal extends TwitchEmotes {
     return `https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0`;
   }
 }
-
-module.exports = TwitchEmotesGlobal;

@@ -1,4 +1,4 @@
-const DEFAULT_CONFIG = {
+export const DEFAULT_CONFIG = {
   channels: [
     {
       name: 'TwitchEmotesGlobal',
@@ -122,8 +122,4 @@ const DEFAULT_CONFIG = {
       id: '5d4d90919728020aca0dc3fa',
     },
   ],
-};
-
-module.exports = {
-  DEFAULT_CONFIG,
 };

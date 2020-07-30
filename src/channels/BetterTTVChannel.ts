@@ -1,6 +1,6 @@
-const BetterTTV = require('./BetterTTV');
+import {BetterTTV} from './BetterTTV';
 
-class BetterTTVChannel extends BetterTTV {
+export class BetterTTVChannel extends BetterTTV {
   channelURL(id) {
     return `https://api.betterttv.net/3/users/${id}`;
   }
@@ -11,5 +11,3 @@ class BetterTTVChannel extends BetterTTV {
     };
   }
 }
-
-module.exports = BetterTTVChannel;

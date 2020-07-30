@@ -1,6 +1,11 @@
-const Emote = require('./Emote');
+import {Emote} from './Emote';
 
-class Channel {
+export class Channel {
+  id: string;
+  name: string;
+  provider: string;
+  emotes: Emote[];
+
   constructor(data) {
     this.id = data.id;
     this.name = data.name;
@@ -26,6 +31,14 @@ class Channel {
       this.emotes = data.emotes.map((emote) => this.createEmote(emote));
     }
     return this;
+  }
+
+  channelURL(id: string): string {
+    return id;
+  }
+
+  emoteURL(id: string): string {
+    return id;
   }
 
   // load data from storage or fetch from api and save to storage if none is found
@@ -71,5 +84,3 @@ class Channel {
     };
   }
 }
-
-module.exports = Channel;

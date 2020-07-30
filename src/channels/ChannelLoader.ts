@@ -1,15 +1,33 @@
-const {storage} = require('../util/storage');
+import {storage} from '../util/storage';
+import {BetterTTV} from './BetterTTV';
+import {BetterTTVChannel} from './BetterTTVChannel';
+import {BetterTTVGlobal} from './BetterTTVGlobal';
+import {Emote} from './Emote';
+import {FrankerFacez} from './FrankerFacez';
+import {TwitchEmotes} from './TwitchEmotes';
+import {TwitchEmotesGlobal} from './TwitchEmotesGlobal';
+
+type Provider =
+  | BetterTTV
+  | BetterTTVGlobal
+  | BetterTTVChannel
+  | TwitchEmotes
+  | TwitchEmotesGlobal
+  | FrankerFacez;
 
 const providers = {
-  BetterTTV: require('./BetterTTV'),
-  BetterTTVGlobal: require('./BetterTTVGlobal'),
-  BetterTTVChannel: require('./BetterTTVChannel'),
-  TwitchEmotes: require('./TwitchEmotes'),
-  TwitchEmotesGlobal: require('./TwitchEmotesGlobal'),
-  FrankerFacez: require('./FrankerFacez'),
+  BetterTTV,
+  BetterTTVGlobal,
+  BetterTTVChannel,
+  TwitchEmotes,
+  TwitchEmotesGlobal,
+  FrankerFacez,
 };
 
-class ChannelLoader {
+export class ChannelLoader {
+  channels: Provider[];
+  compiledEmotes: {[code: string]: Emote};
+
   constructor(channels) {
     this.channels = channels.map(
       (channel) => new providers[channel.provider](channel),
@@ -61,5 +79,3 @@ class ChannelLoader {
     await storage().set(data);
   }
 }
-
-module.exports = ChannelLoader;

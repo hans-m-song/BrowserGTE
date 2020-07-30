@@ -1,7 +1,21 @@
-const {createEmoteEl, createRgx} = require('../util/utils');
+import {createEmoteEl, createRgx} from '../util/utils';
 
-class Emote {
-  constructor(config) {
+interface EmoteConfig {
+  code: string;
+  id: string;
+  src: string;
+  provider: string;
+}
+
+export class Emote {
+  code: string;
+  id: string;
+  src: string;
+  provider: string;
+  rgx: RegExp;
+  element: string;
+
+  constructor(config: EmoteConfig) {
     this.code = config.code;
     this.id = config.id;
     this.src = config.src;
@@ -21,5 +35,3 @@ class Emote {
     };
   }
 }
-
-module.exports = Emote;

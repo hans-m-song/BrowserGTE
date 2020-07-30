@@ -1,7 +1,7 @@
-const {compose} = require('../util/message').content_script;
-const {MESSAGETYPES, SELECTORS} = require('../util/constants');
-const {ConversationObserver} = require('./observers');
-const {waitForEl} = require('../util/utils');
+import {Header, SELECTORS} from '../util/constants';
+import {contentScript} from '../util/message';
+import {waitForEl} from '../util/utils';
+import {ConversationObserver} from './observers';
 
 const createHoverTag = () => {
   const hoverTag = document.createElement('div');
@@ -15,9 +15,10 @@ const hoverTag = createHoverTag();
 waitForEl(SELECTORS.MAIN).then(async (main) => {
   console.log('setup', main, hoverTag);
   document.addEventListener('mouseover', (event) => {
-    if (event.target.className === 'MTEmote') {
-      const rect = event.target.getBoundingClientRect();
-      hoverTag.innerText = event.target.getAttribute('mte-data') || 'unknown';
+    if ((event.target as HTMLElement).className === 'MTEmote') {
+      const rect = (event.target as HTMLElement).getBoundingClientRect();
+      hoverTag.innerText =
+        (event.target as HTMLElement).getAttribute('mte-data') || 'unknown';
       hoverTag.style.top =
         rect.top + document.documentElement.scrollTop - rect.height + 'px';
       hoverTag.style.left =
@@ -27,8 +28,7 @@ waitForEl(SELECTORS.MAIN).then(async (main) => {
       hoverTag.style.display = 'none';
     }
   });
-  window.MTEConversationObserver = new ConversationObserver();
-  await MTEConversationObserver.start();
+  await new ConversationObserver().start();
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -37,7 +37,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.header) {
     default: {
       console[logLevel]('unhandled message', message, sender);
-      sendResponse(compose(MESSAGETYPES.NACK));
+      sendResponse(contentScript.compose(Header.NACK));
     }
   }
   return true;
