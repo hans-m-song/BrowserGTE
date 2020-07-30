@@ -1,15 +1,17 @@
 const BetterTTV = require('./BetterTTV');
 
 class BetterTTVGlobal extends BetterTTV {
+  constructor(data) {
+    super({...data, provider: 'BetterTTV'});
+  }
 
-    constructor(data) {
-        super({ ...data, provider: 'BetterTTV' });
-    }
+  channelURL() {
+    return `https://api.betterttv.net/3/cached/emotes/global`;
+  }
 
-    channelURL() {
-        return `https://api.betterttv.net/2/emotes`;
-    }
-
+  parseData(data) {
+    return {emotes: data};
+  }
 }
 
 module.exports = BetterTTVGlobal;

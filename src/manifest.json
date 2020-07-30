@@ -1,33 +1,25 @@
 {
-    "name": "Messenger Twitch Emotes",
-    "version": "0.0.7",
-    "description": "Twitch emotes in messenger",
-    "permissions": [
-        "storage",
-        "activeTab",
-        "https://api.twitchemotes.com/*",
-        "https://api.betterttv.net/*",
-        "https://api.frankerfacez.com/*"
-    ],
-    "background": {
-        "scripts": [
-            "background.js"
-        ],
-        "persistent": false
-    },
-    "content_scripts": [
-        {
-            "matches": [
-                "*://*.messenger.com/t/*"
-            ],
-            "run_at": "document_idle",
-            "js": [
-                "content_script.js"
-            ],
-            "css": [
-                "style.css"
-            ]
-        }
-    ],
-    "manifest_version": 2
+  "name": "Messenger Twitch Emotes",
+  "version": "0.0.7",
+  "description": "Twitch emotes in messenger",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "https://api.twitchemotes.com/*",
+    "https://api.betterttv.net/*",
+    "https://api.frankerfacez.com/*"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.messenger.com/t/*"],
+      "run_at": "document_idle",
+      "js": ["content_script.js"],
+      "css": ["style.css"]
+    }
+  ],
+  "manifest_version": 2
 }

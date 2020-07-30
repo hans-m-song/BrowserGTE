@@ -1,27 +1,38 @@
 const ChannelLoader = require('../channels/ChannelLoader');
-const { DEFAULT_CONFIG } = require('./config');
+const {DEFAULT_CONFIG} = require('./config');
 
 class Parser {
+  constructor(config = DEFAULT_CONFIG) {
+    this.channelLoader = new ChannelLoader(config.channels);
+  }
 
-    constructor(config = DEFAULT_CONFIG) {
-        this.channelLoader = new ChannelLoader(config.channels);
-    }
-    
-    async init() {
-        await this.channelLoader.init();
-        this.emotes = this.channelLoader.emotes();
-        // TODO settings, custom emotes, etc
-        console.log('parser initialized', this);
-        return this;
-    }
+  async init() {
+    await this.channelLoader
+      .init()
+      .catch((e) =>
+        console.error(
+          `error initalizing channel: ${JSON.stringify(
+            error,
+            Object.getOwnPropertyNames(error),
+          )}`,
+        ),
+      );
 
-    process(message) {
-        return this.emotes
-            .reduce((builder, emote) => emote.test(builder)
-                ? builder.replace(emote.rgx, emote.element)
-                : builder, message);
-    }
+    this.emotes = this.channelLoader.emotes();
+    // TODO settings, custom emotes, etc
+    console.log('parser initialized', this);
+    return this;
+  }
 
+  process(message) {
+    return this.emotes.reduce(
+      (builder, emote) =>
+        emote.test(builder)
+          ? builder.replace(emote.rgx, emote.element)
+          : builder,
+      message,
+    );
+  }
 }
 
 module.exports = Parser;
