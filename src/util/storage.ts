@@ -4,9 +4,7 @@ export const storage = (type: StorageType = 'sync') => {
   const set = (data: Object): Promise<void> =>
     new Promise((resolve, reject) =>
       chrome.storage[type].set(data, () =>
-        chrome.runtime.lastError
-          ? reject(chrome.runtime.lastError)
-          : resolve(null),
+        chrome.runtime.lastError ? reject(chrome.runtime.lastError) : resolve(),
       ),
     );
 
@@ -33,17 +31,13 @@ export const storage = (type: StorageType = 'sync') => {
   const remove = (keys: string | string[]): Promise<{[key: string]: any}> =>
     new Promise((resolve, reject) =>
       chrome.storage[type].remove(keys, () =>
-        chrome.runtime.lastError
-          ? reject(chrome.runtime.lastError)
-          : resolve(null),
+        chrome.runtime.lastError ? reject(chrome.runtime.lastError) : resolve(),
       ),
     );
   const clear = (): Promise<{[key: string]: any}> =>
     new Promise((resolve, reject) =>
       chrome.storage[type].clear(() =>
-        chrome.runtime.lastError
-          ? reject(chrome.runtime.lastError)
-          : resolve(null),
+        chrome.runtime.lastError ? reject(chrome.runtime.lastError) : resolve(),
       ),
     );
 

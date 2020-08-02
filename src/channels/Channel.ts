@@ -1,4 +1,14 @@
-import {Emote} from './Emote';
+import {Emote, EmoteConfig} from './Emote';
+
+interface Data {
+  emotes: EmoteConfig[];
+}
+
+export interface ChannelConfig {
+  id: string;
+  name: string;
+  provider: string;
+}
 
 export class Channel {
   id: string;
@@ -6,10 +16,11 @@ export class Channel {
   provider: string;
   emotes: Emote[];
 
-  constructor(data) {
+  constructor(data: ChannelConfig) {
     this.id = data.id;
     this.name = data.name;
     this.provider = data.provider;
+    this.emotes = [];
   }
 
   // need to provide functions for at least:
@@ -21,28 +32,23 @@ export class Channel {
   // initialize emotes for this channel
   async init() {
     console.log(`initializing channel ${this.provider}.${this.name}`);
-
-    const data = await this.loadData().catch((error) => {
-      console.warn(error);
-      return {emotes: []};
-    });
-
-    if (data) {
-      this.emotes = data.emotes.map((emote) => this.createEmote(emote));
-    }
+    const data = await this.loadData();
+    this.emotes = data.map((config) => this.createEmote(config));
     return this;
   }
 
   channelURL(id: string): string {
+    console.warn('need to override channelURL');
     return id;
   }
 
   emoteURL(id: string): string {
+    console.warn('need to override emoteURL');
     return id;
   }
 
   // load data from storage or fetch from api and save to storage if none is found
-  async loadData() {
+  async loadData(): Promise<EmoteConfig[]> {
     const endpoint = this.channelURL(this.id);
     const response = await fetch(endpoint);
 
@@ -52,22 +58,20 @@ export class Channel {
           response.status
         }, ${await response.text()}`,
       );
-      return null;
+      return [];
     }
 
     const data = await response.json();
-    const parsedData = this.parseData(data);
-
-    return parsedData;
+    return this.parseData(data);
   }
 
   // formatting data retrieved from endpoint into the form { emotes: Array<{ code: string, id: string }> }
-  parseData(data) {
-    return {emotes: data.emotes};
+  parseData(data: unknown): EmoteConfig[] {
+    return (data as Data).emotes;
   }
 
   // create emote from formatted data emote
-  createEmote(emote) {
+  createEmote(emote: EmoteConfig) {
     return new Emote({
       ...emote,
       src: this.emoteURL(emote.id),

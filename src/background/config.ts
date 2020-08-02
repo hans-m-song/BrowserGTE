@@ -3,22 +3,22 @@ export const DEFAULT_CONFIG = {
     {
       name: 'TwitchEmotesGlobal',
       provider: 'TwitchEmotesGlobal',
-      id: 0,
+      id: '0',
     },
     {
       name: 'Jerma985',
       provider: 'TwitchEmotes',
-      id: 23936415,
+      id: '23936415',
     },
     {
       name: 'Vinesauce',
       provider: 'TwitchEmotes',
-      id: 25725272,
+      id: '25725272',
     },
     {
       name: 'moonmoon_ow',
       provider: 'TwitchEmotes',
-      id: 121059319,
+      id: '121059319',
     },
     {
       name: 'BetterTTVGlobal',

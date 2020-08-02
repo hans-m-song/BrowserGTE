@@ -2,7 +2,7 @@ import {Header, SELECTORS} from '../util/constants';
 import {contentScript} from '../util/message';
 import {delay, waitForEl} from '../util/utils';
 
-let messages;
+let messages: HTMLElement | undefined;
 
 interface ObserverOptions {
   target: string;
@@ -13,12 +13,13 @@ abstract class Observer {
   target: string;
   options: MutationObserverInit;
   observer: MutationObserver;
-  rootNode: Node;
+  rootNode: Node | null;
 
   constructor({target, options}: ObserverOptions) {
     this.target = target;
     this.options = options;
     this.observer = new MutationObserver(this.subscriber.bind(this));
+    this.rootNode = null;
   }
 
   subscriber(_mutations: MutationRecord[], _observer: MutationObserver): void {}
@@ -67,31 +68,29 @@ export class MessageObserver extends Observer {
     return this;
   }
 
-  subscriber(mutations) {
+  subscriber(mutations: MutationRecord[]) {
     mutations.forEach((mutation) => {
-      const node = mutation.addedNodes[0];
+      const node = mutation.addedNodes[0] as HTMLElement;
       if (node && node.tagName === 'DIV' && node !== this.rootNode) {
         const spans = Array.from(node.querySelectorAll(SELECTORS.SPANS));
         if (spans.length > 0) {
-          this.applyToSpans(spans);
+          this.applyToSpans(spans as HTMLSpanElement[]);
         }
       }
     });
   }
 
-  async manual(limit = 40) {
-    messages = await waitForEl(SELECTORS.MESSAGES);
+  async manual() {
+    messages = (await waitForEl(SELECTORS.MESSAGES)) as HTMLElement;
 
-    const allSpans = Array.from(messages.querySelectorAll(SELECTORS.SPANS));
-    const spans = allSpans;
-    // .slice(allSpans.length - limit, allSpans.length);
+    const spans = Array.from(messages.querySelectorAll(SELECTORS.SPANS));
 
-    await this.applyToSpans(spans);
+    await this.applyToSpans(spans as HTMLSpanElement[]);
 
     return this;
   }
 
-  async applyToSpans(spans) {
+  async applyToSpans(spans: HTMLSpanElement[]) {
     console.log('processing spans', spans);
     const spanTransformList = spans.map(async (span) => {
       await delay();
@@ -128,7 +127,7 @@ export class ConversationObserver extends Observer {
     console.log('conversationobserver initialized');
   }
 
-  async subscriber(mutations) {
+  async subscriber(mutations: MutationRecord[]) {
     const conversationMutations = mutations.filter(
       (mutation) => mutation.attributeName === 'tabindex',
     );

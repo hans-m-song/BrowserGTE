@@ -1,5 +1,5 @@
 import {Header} from '../util/constants';
-import {background} from '../util/message';
+import {background, Message} from '../util/message';
 import {Parser} from './Parser';
 
 let parser: Parser;
@@ -35,33 +35,35 @@ const initParser = (): Promise<Parser> =>
     }
   });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  initParser().then((parser) => {
-    const logLevel = message.level || 'log';
+chrome.runtime.onMessage.addListener(
+  (message: Message, sender, sendResponse) => {
+    initParser().then((parser) => {
+      const logLevel = message.level || 'log';
 
-    // TODO handle adding new channels, custom emotes, etc
-    try {
-      switch (message.header) {
-        case Header.RAW: {
-          console[logLevel]('message.raw', message);
-          const result = parser.process(message.data);
-          sendResponse(background.compose(Header.PROCESSED, result));
-          break;
+      // TODO handle adding new channels, custom emotes, etc
+      try {
+        switch (message.header) {
+          case Header.RAW: {
+            console[logLevel]('message.raw', message);
+            const result = parser.process(message.data);
+            sendResponse(background.compose(Header.PROCESSED, result));
+            break;
+          }
+          default: {
+            throw new Error('unhandled message type');
+          }
         }
-        default: {
-          throw new Error('unhandled message type');
-        }
+      } catch (error) {
+        console.warn(error, message, sender);
+        console.error(
+          JSON.stringify(error, Object.getOwnPropertyNames(error)),
+          JSON.stringify(message),
+          sender,
+        );
+        sendResponse(background.compose(Header.NACK));
       }
-    } catch (error) {
-      console.warn(error, message, sender);
-      console.error(
-        JSON.stringify(error, Object.getOwnPropertyNames(error)),
-        JSON.stringify(message),
-        sender,
-      );
-      sendResponse(background.compose(Header.NACK));
-    }
-  });
+    });
 
-  return true;
-});
+    return true;
+  },
+);

@@ -1,46 +1,36 @@
+import {ChannelConfig, providers, Providers} from '../channels';
+import {Emote, EmoteConfig} from '../channels/Emote';
 import {storage} from '../util/storage';
-import {BetterTTV} from './BetterTTV';
-import {BetterTTVChannel} from './BetterTTVChannel';
-import {BetterTTVGlobal} from './BetterTTVGlobal';
-import {Emote} from './Emote';
-import {FrankerFacez} from './FrankerFacez';
-import {TwitchEmotes} from './TwitchEmotes';
-import {TwitchEmotesGlobal} from './TwitchEmotesGlobal';
 
-type Provider =
-  | BetterTTV
-  | BetterTTVGlobal
-  | BetterTTVChannel
-  | TwitchEmotes
-  | TwitchEmotesGlobal
-  | FrankerFacez;
+export interface StoredData {
+  channels: {
+    [name: string]: StoredChannel;
+  };
+}
 
-const providers = {
-  BetterTTV,
-  BetterTTVGlobal,
-  BetterTTVChannel,
-  TwitchEmotes,
-  TwitchEmotesGlobal,
-  FrankerFacez,
-};
+interface StoredChannel {
+  name: string;
+  id: string;
+  provider: string;
+  emotes?: EmoteConfig[];
+}
 
 export class ChannelLoader {
-  channels: Provider[];
+  channels: Providers[];
   compiledEmotes: {[code: string]: Emote};
 
-  constructor(channels) {
+  constructor(channels: ChannelConfig[]) {
     this.channels = channels.map(
       (channel) => new providers[channel.provider](channel),
     );
+    this.compiledEmotes = {};
   }
 
   async init() {
-    const data = await storage().list();
-    const channelsToLoad = [];
+    const data = (await storage().list()) as StoredData;
+    const channelsToLoad = [] as Promise<Providers>[];
 
-    if (!data.channels) {
-      await Promise.all(this.channels.map((channel) => channel.init()));
-    } else {
+    if (data.channels) {
       this.channels.forEach((channel) => {
         const storedChannel = data.channels[channel.name];
         if (storedChannel && storedChannel.emotes) {
@@ -53,12 +43,14 @@ export class ChannelLoader {
       });
       await Promise.all(channelsToLoad);
       await this.save();
+    } else {
+      await Promise.all(this.channels.map((channel) => channel.init()));
     }
 
     this.compiledEmotes = this.channels.reduce((emotes, channel) => {
       (channel.emotes || []).forEach((emote) => (emotes[emote.code] = emote));
       return emotes;
-    }, {});
+    }, {} as {[code: string]: Emote});
 
     return this;
   }
@@ -68,7 +60,7 @@ export class ChannelLoader {
   }
 
   async save() {
-    const data = {channels: {}};
+    const data = {channels: {}} as StoredData;
 
     this.channels.forEach(
       (channel) => (data.channels[channel.name] = channel.toJSON()),

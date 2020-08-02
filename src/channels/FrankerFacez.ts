@@ -1,3 +1,4 @@
+import {EmoteConfig} from '.';
 import {Channel} from './Channel';
 import {Emote} from './Emote';
 
@@ -12,25 +13,25 @@ interface Data {
 }
 
 export class FrankerFacez extends Channel {
-  parseData(data) {
-    const emotes = Object.values((data as Data).sets).reduce((emotes, set) => {
+  parseData(data: unknown) {
+    return Object.values((data as Data).sets).reduce((emotes, set) => {
       set.emoticons.forEach((emote) =>
         emotes.push({
           code: emote.name,
           id: emote.id,
           src: emote.urls['1'],
+          provider: '',
         }),
       );
       return emotes;
-    }, [] as {code: string; id: string; src: string}[]);
-    return {emotes};
+    }, [] as EmoteConfig[]);
   }
 
-  channelURL(id) {
+  channelURL(id: string) {
     return `https://api.frankerfacez.com/v1/room/${id}`;
   }
 
-  createEmote(emote) {
+  createEmote(emote: EmoteConfig) {
     return new Emote({
       ...emote,
       provider: this.provider,

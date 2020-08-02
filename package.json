@@ -5,8 +5,8 @@
   "main": "src/background/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "compile:background": "browserify src/background/index.js -o dist/background.js",
-    "compile:content_script": "browserify src/content_script/index.js -o dist/content_script.js",
+    "compile:background": "browserify src/background/index.ts -p [ tsify ] > dist/background.js",
+    "compile:content_script": "browserify src/content_script/index.ts -p [ tsify ] > dist/content_script.js",
     "compile": "npm run compile:background && npm run compile:content_script",
     "watch": "nodemon",
     "release": "npm run compile && cp src/manifest.json src/style.css dist/"
@@ -22,9 +22,13 @@
     "url": "https://github.com/hans-m-song/MessengerTwitchEmotes/issues"
   },
   "homepage": "https://github.com/hans-m-song/MessengerTwitchEmotes#readme",
-  "devDependencies": {
+  "dependencies": {
     "@types/chrome": "0.0.93",
     "@types/node": "^13.7.0",
+    "typescript": "^3.9.7"
+  },
+  "devDependencies": {
+    "tsify": "^5.0.0",
     "browserify": "^16.5.0",
     "nodemon": "^2.0.4"
   }
