@@ -1,28 +1,36 @@
-const {storage} = require('../util/storage');
+import {ChannelConfig, providers, Providers} from '../channels';
+import {Emote, EmoteConfig} from '../channels/Emote';
+import {storage} from '../util/storage';
 
-const providers = {
-  BetterTTV: require('./BetterTTV'),
-  BetterTTVGlobal: require('./BetterTTVGlobal'),
-  BetterTTVChannel: require('./BetterTTVChannel'),
-  TwitchEmotes: require('./TwitchEmotes'),
-  TwitchEmotesGlobal: require('./TwitchEmotesGlobal'),
-  FrankerFacez: require('./FrankerFacez'),
-};
+export interface StoredData {
+  channels: {
+    [name: string]: StoredChannel;
+  };
+}
 
-class ChannelLoader {
-  constructor(channels) {
+interface StoredChannel {
+  name: string;
+  id: string;
+  provider: string;
+  emotes?: EmoteConfig[];
+}
+
+export class ChannelLoader {
+  channels: Providers[];
+  compiledEmotes: {[code: string]: Emote};
+
+  constructor(channels: ChannelConfig[]) {
     this.channels = channels.map(
       (channel) => new providers[channel.provider](channel),
     );
+    this.compiledEmotes = {};
   }
 
   async init() {
-    const data = await storage().list();
-    const channelsToLoad = [];
+    const data = (await storage().list()) as StoredData;
+    const channelsToLoad = [] as Promise<Providers>[];
 
-    if (!data.channels) {
-      await Promise.all(this.channels.map((channel) => channel.init()));
-    } else {
+    if (data.channels) {
       this.channels.forEach((channel) => {
         const storedChannel = data.channels[channel.name];
         if (storedChannel && storedChannel.emotes) {
@@ -35,12 +43,14 @@ class ChannelLoader {
       });
       await Promise.all(channelsToLoad);
       await this.save();
+    } else {
+      await Promise.all(this.channels.map((channel) => channel.init()));
     }
 
     this.compiledEmotes = this.channels.reduce((emotes, channel) => {
       (channel.emotes || []).forEach((emote) => (emotes[emote.code] = emote));
       return emotes;
-    }, {});
+    }, {} as {[code: string]: Emote});
 
     return this;
   }
@@ -50,7 +60,7 @@ class ChannelLoader {
   }
 
   async save() {
-    const data = {channels: {}};
+    const data = {channels: {}} as StoredData;
 
     this.channels.forEach(
       (channel) => (data.channels[channel.name] = channel.toJSON()),
@@ -61,5 +71,3 @@ class ChannelLoader {
     await storage().set(data);
   }
 }
-
-module.exports = ChannelLoader;

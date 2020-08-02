@@ -1,13 +1,11 @@
-const Channel = require('./Channel');
+import {Channel} from './Channel';
 
-class TwitchEmotes extends Channel {
-  channelURL(id) {
+export class TwitchEmotes extends Channel {
+  channelURL(id: string) {
     return `https://api.twitchemotes.com/api/v4/channels/${id}`;
   }
 
-  emoteURL(id) {
+  emoteURL(id: string) {
     return `https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0`;
   }
 }
-
-module.exports = TwitchEmotes;

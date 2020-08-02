@@ -1,15 +1,20 @@
-const ChannelLoader = require('../channels/ChannelLoader');
-const {DEFAULT_CONFIG} = require('./config');
+import {Emote} from '../channels';
+import {ChannelLoader} from './ChannelLoader';
+import {DEFAULT_CONFIG} from './config';
 
-class Parser {
+export class Parser {
+  emotes: Emote[];
+  channelLoader: ChannelLoader;
+
   constructor(config = DEFAULT_CONFIG) {
     this.channelLoader = new ChannelLoader(config.channels);
+    this.emotes = [];
   }
 
   async init() {
     await this.channelLoader
       .init()
-      .catch((e) =>
+      .catch((error) =>
         console.error(
           `error initalizing channel: ${JSON.stringify(
             error,
@@ -24,7 +29,7 @@ class Parser {
     return this;
   }
 
-  process(message) {
+  process(message: string) {
     return this.emotes.reduce(
       (builder, emote) =>
         emote.test(builder)
@@ -34,5 +39,3 @@ class Parser {
     );
   }
 }
-
-module.exports = Parser;

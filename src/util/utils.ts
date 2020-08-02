@@ -1,4 +1,4 @@
-const waitForEl = (selector, interval = 100) =>
+export const waitForEl = (selector: string, interval = 100): Promise<Node> =>
   new Promise((resolve) => {
     const intervalHandle = setInterval(() => {
       const element = document.querySelector(selector);
@@ -10,18 +10,11 @@ const waitForEl = (selector, interval = 100) =>
     }, interval);
   });
 
-const createEmoteEl = (code, src, provider) =>
+export const createEmoteEl = (code: string, src: string, provider: string) =>
   ` <img src="${src}" alt="${code}" class="MTEmote" mte-data="${provider}: ${code}"> `;
 
-const createRgx = (code) =>
+export const createRgx = (code: string) =>
   new RegExp(`(?<=(^|\\s|>))${code.replace(/\./g, '\\.')}(?=($|\\s|<))`, 'g');
 
-const delay = (timeout = 500) =>
+export const delay = (timeout = 500) =>
   new Promise((resolve) => setTimeout(() => resolve(), timeout));
-
-module.exports = {
-  waitForEl,
-  createEmoteEl,
-  createRgx,
-  delay,
-};

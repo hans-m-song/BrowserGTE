@@ -1,24 +1,24 @@
-const DEFAULT_CONFIG = {
+export const DEFAULT_CONFIG = {
   channels: [
     {
       name: 'TwitchEmotesGlobal',
       provider: 'TwitchEmotesGlobal',
-      id: 0,
+      id: '0',
     },
     {
       name: 'Jerma985',
       provider: 'TwitchEmotes',
-      id: 23936415,
+      id: '23936415',
     },
     {
       name: 'Vinesauce',
       provider: 'TwitchEmotes',
-      id: 25725272,
+      id: '25725272',
     },
     {
       name: 'moonmoon_ow',
       provider: 'TwitchEmotes',
-      id: 121059319,
+      id: '121059319',
     },
     {
       name: 'BetterTTVGlobal',
@@ -122,8 +122,4 @@ const DEFAULT_CONFIG = {
       id: '5d4d90919728020aca0dc3fa',
     },
   ],
-};
-
-module.exports = {
-  DEFAULT_CONFIG,
 };
