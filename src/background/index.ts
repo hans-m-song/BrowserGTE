@@ -1,5 +1,5 @@
-import {Header} from '../util/constants';
-import {background, Message} from '../util/message';
+import {Header} from '@util/constants';
+import {background, Message} from '@util/message';
 import {Parser} from './Parser';
 
 let parser: Parser;

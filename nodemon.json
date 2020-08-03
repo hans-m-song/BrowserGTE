@@ -1,9 +1,0 @@
-{
-    "watch": [
-        "src/*",
-        "types/*"
-    ],
-    "exec": "npm run compile",
-    "ext": "js,json",
-    "delay": 1000
-}

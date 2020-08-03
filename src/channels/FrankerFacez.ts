@@ -1,6 +1,5 @@
-import {EmoteConfig} from '.';
 import {Channel} from './Channel';
-import {Emote} from './Emote';
+import {Emote, EmoteConfig} from './Emote';
 
 interface Data {
   sets: Array<{

@@ -1,4 +1,4 @@
-import {ChannelConfig} from '.';
+import {ChannelConfig} from './Channel';
 import {TwitchEmotes} from './TwitchEmotes';
 
 const TWITCHGLOBALEMOTES = {

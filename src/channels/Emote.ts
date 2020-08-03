@@ -1,4 +1,4 @@
-import {createEmoteEl, createRgx} from '../util/utils';
+import {createEmoteEl, createRgx} from '@util/functions';
 
 export interface EmoteConfig {
   code: string;
