@@ -1,6 +1,7 @@
-import {ChannelConfig, providers, Providers} from '../channels';
-import {Emote, EmoteConfig} from '../channels/Emote';
-import {storage} from '../util/storage';
+import {ChannelConfig} from '@channels/Channel';
+import {Emote, EmoteConfig} from '@channels/Emote';
+import {providers, Providers} from '@channels/Providers';
+import {storage} from '@util/storage';
 
 export interface StoredData {
   channels: {

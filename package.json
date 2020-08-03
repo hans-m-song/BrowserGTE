@@ -5,8 +5,8 @@
   "main": "src/background/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "compile:background": "browserify src/background/index.ts -p [ tsify ] > dist/background.js",
-    "compile:content_script": "browserify src/content_script/index.ts -p [ tsify ] > dist/content_script.js",
+    "compile:background": "node browserify.js src/background/index.ts dist/background.js",
+    "compile:content_script": "node browserify.js src/content_script/index.ts dist/content_script.js",
     "compile": "npm run compile:background && npm run compile:content_script",
     "watch": "nodemon",
     "release": "npm run compile && cp src/manifest.json src/style.css dist/"
@@ -28,8 +28,10 @@
     "typescript": "^3.9.7"
   },
   "devDependencies": {
-    "tsify": "^5.0.0",
     "browserify": "^16.5.0",
-    "nodemon": "^2.0.4"
+    "pathmodify": "^0.5.0",
+    "tsconfig-paths": "^3.9.0",
+    "tsify": "^5.0.0",
+    "watchify": "^3.11.1"
   }
 }

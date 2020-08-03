@@ -1,6 +1,6 @@
-import {Header, SELECTORS} from '../util/constants';
-import {contentScript} from '../util/message';
-import {delay, waitForEl} from '../util/utils';
+import {Header, SELECTORS} from '@util/constants';
+import {delay, waitForEl} from '@util/functions';
+import {contentScript} from '@util/message';
 
 let messages: HTMLElement | undefined;
 

@@ -1,4 +1,4 @@
-import {Emote} from '../channels';
+import {Emote} from '@channels/Emote';
 import {ChannelLoader} from './ChannelLoader';
 import {DEFAULT_CONFIG} from './config';
 

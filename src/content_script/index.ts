@@ -1,6 +1,6 @@
-import {Header, SELECTORS} from '../util/constants';
-import {contentScript, Message} from '../util/message';
-import {waitForEl} from '../util/utils';
+import {Header, SELECTORS} from '@util/constants';
+import {waitForEl} from '@util/functions';
+import {contentScript, Message} from '@util/message';
 import {ConversationObserver} from './observers';
 
 const createHoverTag = () => {
