@@ -5,11 +5,15 @@
   "main": "src/background/index.js",
   "scripts": {
     "clean": "rm -rf dist",
+    "compile:options": "node browserify.js src/options/index.ts dist/options.js",
     "compile:background": "node browserify.js src/background/index.ts dist/background.js",
     "compile:content_script": "node browserify.js src/content_script/index.ts dist/content_script.js",
-    "compile": "npm run compile:background && npm run compile:content_script",
-    "watch": "nodemon",
-    "release": "npm run compile && cp src/manifest.json src/style.css dist/"
+    "compile": "npm run compile:background && npm run compile:content_script && npm run compile:options",
+    "watch:options": "node watchify.js src/options/index.ts dist/options.js",
+    "watch:background": "node watchify.js src/background/index.ts dist/background.js",
+    "watch:content_script": "node watchify.js src/content_script/index.ts dist/content_script.js",
+    "watch": "concurrently npm:watch:*",
+    "release": "npm run compile && cp src/static/* dist/"
   },
   "repository": {
     "type": "git",
@@ -29,6 +33,7 @@
   },
   "devDependencies": {
     "browserify": "^16.5.0",
+    "concurrently": "^5.2.0",
     "pathmodify": "^0.5.0",
     "tsconfig-paths": "^3.9.0",
     "tsify": "^5.0.0",

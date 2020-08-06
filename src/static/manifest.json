@@ -5,6 +5,7 @@
   "permissions": [
     "storage",
     "activeTab",
+    "declarativeContent",
     "https://api.twitchemotes.com/*",
     "https://api.betterttv.net/*",
     "https://api.frankerfacez.com/*"
@@ -21,5 +22,6 @@
       "css": ["style.css"]
     }
   ],
+  "options_page": "options.html",
   "manifest_version": 2
 }
