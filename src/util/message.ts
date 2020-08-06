@@ -1,22 +1,21 @@
 import {Header, LogLevel, Sender} from './constants';
 
-interface MessageTemplate {
+export interface Message {
   header: Header;
   sender: Sender;
   data: unknown;
   level: LogLevel;
 }
-interface ParseMessage extends MessageTemplate {
+export interface ParseMessage extends Message {
   header: Header.PROCESSED | Header.RAW;
   data: string;
 }
 
-interface ComMessage extends MessageTemplate {
+export interface ComMessage extends Message {
   header: Header.ACK | Header.NACK;
   data: string;
 }
 
-export type Message = ParseMessage | ComMessage;
 
 const compose = (
   header: Header,
@@ -43,29 +42,16 @@ interface Communication {
   ) => Message;
 }
 
-export const background: Communication = {
+export const message = (sender: Sender): Communication => ({
   send: (header, data, level) =>
     new Promise((resolve) =>
       chrome.tabs.query({active: true, currentWindow: true}, (tabs) =>
         chrome.tabs.sendMessage(
           tabs[0].id!,
-          compose(header, Sender.Background, data || '', level),
+          compose(header, sender, data || '', level),
           (response) => resolve(response),
         ),
       ),
     ),
-  compose: (header, data, level) =>
-    compose(header, Sender.Background, data || '', level),
-};
-
-export const contentScript: Communication = {
-  send: (header, data, level) =>
-    new Promise((resolve) =>
-      chrome.runtime.sendMessage(
-        compose(header, Sender.ContentScript, data || '', level),
-        (response) => resolve(response),
-      ),
-    ),
-  compose: (header, data, level) =>
-    compose(header, Sender.ContentScript, data || '', level),
-};
+  compose: (header, data, level) => compose(header, sender, data || '', level),
+});

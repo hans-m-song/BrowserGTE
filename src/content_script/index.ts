@@ -1,7 +1,9 @@
-import {Header, SELECTORS} from '@util/constants';
+import {Header, SELECTORS, Sender} from '@util/constants';
 import {waitForEl} from '@util/functions';
-import {contentScript, Message} from '@util/message';
+import {message, Message} from '@util/message';
 import {ConversationObserver} from './observers';
+
+const {compose} = message(Sender.ContentScript);
 
 const createHoverTag = () => {
   const hoverTag = document.createElement('div');
@@ -38,7 +40,7 @@ chrome.runtime.onMessage.addListener(
     switch (message.header) {
       default: {
         console[logLevel]('unhandled message', message, sender);
-        sendResponse(contentScript.compose(Header.NACK));
+        sendResponse(compose(Header.NACK));
       }
     }
     return true;

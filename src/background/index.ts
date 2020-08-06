@@ -1,6 +1,8 @@
-import {Header} from '@util/constants';
-import {background, Message} from '@util/message';
+import {Header, Sender} from '@util/constants';
+import {message, Message, ParseMessage} from '@util/message';
 import {Parser} from './Parser';
+
+const {compose} = message(Sender.Background);
 
 let parser: Parser;
 let initializing = false;
@@ -39,14 +41,14 @@ chrome.runtime.onMessage.addListener(
   (message: Message, sender, sendResponse) => {
     initParser().then((parser) => {
       const logLevel = message.level || 'log';
+      console[logLevel](`MESSAGE.${message.header}`, message);
 
       // TODO handle adding new channels, custom emotes, etc
       try {
         switch (message.header) {
           case Header.RAW: {
-            console[logLevel]('message.raw', message);
-            const result = parser.process(message.data);
-            sendResponse(background.compose(Header.PROCESSED, result));
+            const result = parser.process((message as ParseMessage).data);
+            sendResponse(compose(Header.PROCESSED, result));
             break;
           }
           default: {
@@ -60,7 +62,7 @@ chrome.runtime.onMessage.addListener(
           JSON.stringify(message),
           sender,
         );
-        sendResponse(background.compose(Header.NACK));
+        sendResponse(compose(Header.NACK));
       }
     });
 

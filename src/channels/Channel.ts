@@ -79,7 +79,7 @@ export class Channel {
     });
   }
 
-  toJSON() {
+  toJSON(): ChannelConfig & Data {
     return {
       id: this.id,
       name: this.name,

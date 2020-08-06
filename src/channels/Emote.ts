@@ -28,7 +28,7 @@ export class Emote {
     return this.rgx.test(value);
   }
 
-  toJSON() {
+  toJSON(): EmoteConfig {
     return {
       code: this.code,
       id: this.id,
