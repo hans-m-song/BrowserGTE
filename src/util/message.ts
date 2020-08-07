@@ -16,8 +16,12 @@ export interface ComMessage extends Message {
   data: string;
 }
 
+export interface OptMessage extends Message {
+  header: Header.IMPORT | Header.EXPORT;
+  data: {};
+}
 
-const compose = (
+const composeMessage = (
   header: Header,
   sender: Sender,
   data: Message['data'],
@@ -42,16 +46,33 @@ interface Communication {
   ) => Message;
 }
 
-export const message = (sender: Sender): Communication => ({
-  send: (header, data, level) =>
+export const message = (sender: Sender): Communication => {
+  const compose: Communication['compose'] = (header, data, level) =>
+    composeMessage(header, sender, data || '', level);
+
+  const sendFromExtension: Communication['send'] = (header, data, level) =>
     new Promise((resolve) =>
       chrome.tabs.query({active: true, currentWindow: true}, (tabs) =>
         chrome.tabs.sendMessage(
           tabs[0].id!,
-          compose(header, sender, data || '', level),
+          composeMessage(header, sender, data || '', level),
           (response) => resolve(response),
         ),
       ),
-    ),
-  compose: (header, data, level) => compose(header, sender, data || '', level),
-});
+    );
+
+  const sendFromContentScript: Communication['send'] = (header, data, level) =>
+    new Promise((resolve) =>
+      chrome.runtime.sendMessage(
+        composeMessage(header, Sender.ContentScript, data || '', level),
+        (response) => resolve(response),
+      ),
+    );
+
+  const send =
+    sender === Sender.Background || sender === Sender.Options
+      ? sendFromExtension
+      : sendFromContentScript;
+
+  return {compose, send};
+};

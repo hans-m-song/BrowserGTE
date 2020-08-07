@@ -51,6 +51,9 @@ chrome.runtime.onMessage.addListener(
             sendResponse(compose(Header.PROCESSED, result));
             break;
           }
+          case Header.IMPORT:
+          case Header.EXPORT:
+            break;
           default: {
             throw new Error('unhandled message type');
           }

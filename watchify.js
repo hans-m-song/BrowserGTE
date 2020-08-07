@@ -10,7 +10,9 @@ if (!entrypoint || !destination) {
 }
 
 const update = (ids) => {
-  console.log('updated', ids);
+  if (ids) {
+    console.log('updated', ids);
+  }
   b.bundle().on('error', console.error).pipe(fs.createWriteStream(destination));
 };
 

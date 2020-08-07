@@ -6,8 +6,9 @@ export const SELECTORS = {
 };
 
 export enum Sender {
-  Background = 'Background',
-  ContentScript = 'ContentScript',
+  Background,
+  ContentScript,
+  Options,
 }
 
 export enum LogLevel {
@@ -21,4 +22,6 @@ export enum Header {
   NACK = 'NACK',
   RAW = 'RAW',
   PROCESSED = 'PROCESSED',
+  IMPORT = 'IMPORT',
+  EXPORT = 'EXPORT',
 }

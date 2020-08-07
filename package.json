@@ -13,7 +13,8 @@
     "watch:background": "node watchify.js src/background/index.ts dist/background.js",
     "watch:content_script": "node watchify.js src/content_script/index.ts dist/content_script.js",
     "watch": "concurrently npm:watch:*",
-    "release": "npm run compile && cp src/static/* dist/"
+    "release:static": "cp src/static/* dist/",
+    "release": "npm run compile && npm run release:static"
   },
   "repository": {
     "type": "git",
