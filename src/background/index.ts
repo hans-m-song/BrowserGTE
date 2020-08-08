@@ -1,5 +1,12 @@
-import {Header, Sender} from '@util/constants';
-import {message, Message, OptMessage, ParseMessage} from '@util/message';
+import {Header, LogLevel, Sender} from '@util/constants';
+import {stringifyError} from '@util/functions';
+import {
+  logMessage,
+  message,
+  Message,
+  OptMessage,
+  ParseMessage,
+} from '@util/message';
 import {Parser} from './Parser';
 
 const {compose} = message(Sender.Background);
@@ -38,12 +45,10 @@ const initParser = (): Promise<Parser> =>
   });
 
 chrome.runtime.onMessage.addListener(
-  (message: Message, sender, sendResponse) => {
+  (message: Message, _sender, sendResponse) => {
     initParser().then((parser) => {
-      const logLevel = message.level || 'log';
-      console[logLevel](`MESSAGE.${message.header}`, message);
+      logMessage(message, 'received message');
 
-      // TODO handle adding new channels, custom emotes, etc
       try {
         switch (message.header) {
           case Header.RAW: {
@@ -54,6 +59,7 @@ chrome.runtime.onMessage.addListener(
           case Header.IMPORT: {
             const {data} = message as OptMessage;
             parser = new Parser(data);
+            sendResponse(compose(Header.OK));
             break;
           }
           case Header.EXPORT: {
@@ -65,13 +71,14 @@ chrome.runtime.onMessage.addListener(
             throw new Error('unhandled message type');
           }
         }
-      } catch (error) {
-        console.error(
-          JSON.stringify(error, Object.getOwnPropertyNames(error)),
-          JSON.stringify(message),
-          sender,
+      } catch (e) {
+        const message = compose(
+          Header.ERROR,
+          stringifyError(e),
+          LogLevel.ERROR,
         );
-        sendResponse(compose(Header.NACK));
+        logMessage(message, 'error handling message');
+        sendResponse(message);
       }
     });
 

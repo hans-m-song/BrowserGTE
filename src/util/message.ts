@@ -13,7 +13,7 @@ export interface ParseMessage extends Message {
 }
 
 export interface ComMessage extends Message {
-  header: Header.ACK | Header.NACK;
+  header: Header.OK | Header.ERROR;
   data: string;
 }
 
@@ -81,4 +81,13 @@ export const message = (sender: Sender) => {
     compose,
     send,
   };
+};
+
+export const logMessage = (message: Message, preamble?: string) => {
+  const {sender, header, data} = message;
+  const parts = [sender, header, data];
+  if (preamble) {
+    parts.unshift(preamble);
+  }
+  console[message.level](...parts);
 };

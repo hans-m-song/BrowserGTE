@@ -18,3 +18,9 @@ export const createRgx = (code: string) =>
 
 export const delay = (timeout = 500) =>
   new Promise((resolve) => setTimeout(() => resolve(), timeout));
+
+export const stringifyError = (e: Error) => {
+  console.error(e);
+  const {message, stack, name} = e;
+  return {message, stack: stack?.split('\n') || [], name};
+};

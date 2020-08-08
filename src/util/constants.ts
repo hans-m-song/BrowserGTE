@@ -18,8 +18,8 @@ export enum LogLevel {
 }
 
 export enum Header {
-  ACK = 'ACK',
-  NACK = 'NACK',
+  OK = 'OK',
+  ERROR = 'ERROR',
   RAW = 'RAW',
   PROCESSED = 'PROCESSED',
   IMPORT = 'IMPORT',

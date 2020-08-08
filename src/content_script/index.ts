@@ -1,6 +1,6 @@
 import {Header, SELECTORS, Sender} from '@util/constants';
 import {waitForEl} from '@util/functions';
-import {message, Message} from '@util/message';
+import {logMessage, message, Message} from '@util/message';
 import {ConversationObserver} from './observers';
 
 const {compose} = message(Sender.ContentScript);
@@ -34,13 +34,11 @@ waitForEl(SELECTORS.MAIN).then(async (main) => {
 });
 
 chrome.runtime.onMessage.addListener(
-  (message: Message, sender, sendResponse) => {
-    const logLevel = message.level;
-
+  (message: Message, _sender, sendResponse) => {
     switch (message.header) {
       default: {
-        console[logLevel]('unhandled message', message, sender);
-        sendResponse(compose(Header.NACK));
+        logMessage(message, 'unhandled message');
+        sendResponse(compose(Header.ERROR));
       }
     }
     return true;
