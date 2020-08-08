@@ -1,5 +1,5 @@
 import {Header, Sender} from '@util/constants';
-import {message, Message, ParseMessage} from '@util/message';
+import {message, Message, OptMessage, ParseMessage} from '@util/message';
 import {Parser} from './Parser';
 
 const {compose} = message(Sender.Background);
@@ -51,15 +51,21 @@ chrome.runtime.onMessage.addListener(
             sendResponse(compose(Header.PROCESSED, result));
             break;
           }
-          case Header.IMPORT:
-          case Header.EXPORT:
+          case Header.IMPORT: {
+            const {data} = message as OptMessage;
+            parser = new Parser(data);
             break;
+          }
+          case Header.EXPORT: {
+            const data = parser.toJSON();
+            sendResponse(compose(Header.EXPORT, data));
+            break;
+          }
           default: {
             throw new Error('unhandled message type');
           }
         }
       } catch (error) {
-        console.warn(error, message, sender);
         console.error(
           JSON.stringify(error, Object.getOwnPropertyNames(error)),
           JSON.stringify(message),

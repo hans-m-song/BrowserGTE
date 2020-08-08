@@ -1,7 +1,7 @@
 import {Header, Sender} from '@util/constants';
 import {message} from '@util/message';
 
-const {send} = message(Sender.Background);
+const {send} = message(Sender.Options);
 
 const getElement = (id: string): HTMLElement => document.getElementById(id)!;
 

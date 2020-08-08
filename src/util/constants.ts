@@ -6,9 +6,9 @@ export const SELECTORS = {
 };
 
 export enum Sender {
-  Background,
-  ContentScript,
-  Options,
+  Background = 'BACKGROUND',
+  ContentScript = 'CONTENTSCRIPT',
+  Options = 'OPTIONS',
 }
 
 export enum LogLevel {

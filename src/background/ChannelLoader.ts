@@ -56,10 +56,6 @@ export class ChannelLoader {
     return this;
   }
 
-  emotes() {
-    return Object.values(this.compiledEmotes);
-  }
-
   async save() {
     const data = {channels: {}} as StoredData;
 

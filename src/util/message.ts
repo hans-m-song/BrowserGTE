@@ -1,3 +1,4 @@
+import {ParserConfig} from 'background/Parser';
 import {Header, LogLevel, Sender} from './constants';
 
 export interface Message {
@@ -18,7 +19,7 @@ export interface ComMessage extends Message {
 
 export interface OptMessage extends Message {
   header: Header.IMPORT | Header.EXPORT;
-  data: {};
+  data: ParserConfig;
 }
 
 const composeMessage = (
@@ -46,33 +47,38 @@ interface Communication {
   ) => Message;
 }
 
-export const message = (sender: Sender): Communication => {
+const toExtension = (message: Message): Promise<Message> =>
+  new Promise((resolve) =>
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) =>
+      chrome.tabs.sendMessage(tabs[0].id!, message, (response) =>
+        resolve(response),
+      ),
+    ),
+  );
+
+const toContentScript = (message: Message): Promise<Message> =>
+  new Promise((resolve) =>
+    chrome.runtime.sendMessage(message, (response) => resolve(response)),
+  );
+
+export const message = (sender: Sender) => {
   const compose: Communication['compose'] = (header, data, level) =>
-    composeMessage(header, sender, data || '', level);
+    composeMessage(header, sender, data, level);
 
-  const sendFromExtension: Communication['send'] = (header, data, level) =>
-    new Promise((resolve) =>
-      chrome.tabs.query({active: true, currentWindow: true}, (tabs) =>
-        chrome.tabs.sendMessage(
-          tabs[0].id!,
-          composeMessage(header, sender, data || '', level),
-          (response) => resolve(response),
-        ),
-      ),
-    );
+  const send: Communication['send'] = (header, data, level) => {
+    const message = composeMessage(header, sender, data, level);
 
-  const sendFromContentScript: Communication['send'] = (header, data, level) =>
-    new Promise((resolve) =>
-      chrome.runtime.sendMessage(
-        composeMessage(header, Sender.ContentScript, data || '', level),
-        (response) => resolve(response),
-      ),
-    );
+    switch (sender) {
+      case Sender.Options:
+      case Sender.Background:
+        return toContentScript(message);
+      case Sender.ContentScript:
+        return toExtension(message);
+    }
+  };
 
-  const send =
-    sender === Sender.Background || sender === Sender.Options
-      ? sendFromExtension
-      : sendFromContentScript;
-
-  return {compose, send};
+  return {
+    compose,
+    send,
+  };
 };
