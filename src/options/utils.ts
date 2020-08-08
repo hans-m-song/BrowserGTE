@@ -38,9 +38,9 @@ export const resizeTextArea = (textArea: HTMLTextAreaElement) => {
   textArea.style.height = 'auto';
   textArea.style.height = `${Math.min(
     textArea.scrollHeight,
-    window.innerHeight - 65,
+    window.innerHeight - 80,
   )}px`;
 };
 
 export const setMessage = (section: Section, message: string) =>
-  (element(section, El.Message).innerText = message);
+  (element(section, El.Message).innerText = `Message: ${message || ''}`);

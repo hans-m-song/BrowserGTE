@@ -1,4 +1,28 @@
-export const DEFAULT_CONFIG = {
+import {ChannelConfig} from '@channels/Channel';
+import {EmoteConfig} from '@channels/Emote';
+
+export enum ParserConfigType {
+  Loader = 'Loader',
+  Storage = 'Storage',
+}
+
+export type LoaderConfig = {
+  type: ParserConfigType.Loader;
+  channels: ChannelConfig[];
+  emotes: {};
+};
+
+export type StorageConfig = {
+  type: ParserConfigType.Storage;
+  channels: [];
+  emotes: {[code: string]: EmoteConfig};
+};
+
+export type ParserConfig = LoaderConfig | StorageConfig;
+
+export const DEFAULT_CONFIG: LoaderConfig = {
+  type: ParserConfigType.Loader,
+  emotes: {},
   channels: [
     {
       name: 'TwitchEmotesGlobal',

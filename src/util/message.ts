@@ -1,4 +1,3 @@
-import {ParserConfig} from 'background/Parser';
 import {Header, LogLevel, Sender} from './constants';
 
 export interface Message {
@@ -6,20 +5,6 @@ export interface Message {
   sender: Sender;
   data: unknown;
   level: LogLevel;
-}
-export interface ParseMessage extends Message {
-  header: Header.PROCESSED | Header.RAW;
-  data: string;
-}
-
-export interface ComMessage extends Message {
-  header: Header.OK | Header.ERROR;
-  data: string;
-}
-
-export interface OptMessage extends Message {
-  header: Header.IMPORT | Header.EXPORT;
-  data: ParserConfig;
 }
 
 const composeMessage = (

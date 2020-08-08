@@ -1,13 +1,6 @@
-import {ChannelConfig} from '@channels/Channel';
-import {Emote, EmoteConfig} from '@channels/Emote';
+import {Emote} from '@channels/Emote';
 import {ChannelLoader} from './ChannelLoader';
-import {DEFAULT_CONFIG} from './config';
-
-export type LoaderConfig = {channels: ChannelConfig[]};
-
-export type StorageConfig = {emotes: EmoteConfig[]};
-
-export type ParserConfig = LoaderConfig | StorageConfig;
+import {DEFAULT_CONFIG, ParserConfig, ParserConfigType} from './config';
 
 export class Parser {
   compiledEmotes: {[code: string]: Emote} = {};
@@ -16,19 +9,26 @@ export class Parser {
 
   constructor(config: ParserConfig = DEFAULT_CONFIG) {
     this.emotes = [];
-    if ((config as LoaderConfig).channels) {
-      this.channelLoader = new ChannelLoader((config as LoaderConfig).channels);
-    } else if ((config as StorageConfig).emotes) {
-      this.compiledEmotes = (config as StorageConfig).emotes.reduce(
-        (compiledEmotes, config) => ({
-          ...compiledEmotes,
-          [config.code]: new Emote(config),
-        }),
-        {} as {[code: string]: Emote},
-      );
-    } else {
-      console.error('Invalid configuration', config);
-      throw new Error('Invalid configuration');
+    const {type, emotes, channels} = config;
+    switch (type) {
+      case ParserConfigType.Loader: {
+        this.channelLoader = new ChannelLoader(channels);
+        break;
+      }
+      case ParserConfigType.Storage: {
+        this.compiledEmotes = Object.values(emotes).reduce(
+          (compiledEmotes, config) => ({
+            ...compiledEmotes,
+            [config.code]: new Emote(config),
+          }),
+          {} as {[code: string]: Emote},
+        );
+        break;
+      }
+      default: {
+        console.error('Invalid configuration', config);
+        throw new Error('Invalid configuration');
+      }
     }
   }
 
@@ -69,6 +69,13 @@ export class Parser {
   }
 
   toJSON() {
-    return this.channelLoader?.compiledEmotes || this.compiledEmotes;
+    return {
+      emotes: this.channelLoader?.compiledEmotes || this.compiledEmotes,
+      channels:
+        this.channelLoader?.channels.map((channel) => {
+          const {id, name, provider} = channel;
+          return {id, name, provider};
+        }) || [],
+    };
   }
 }

@@ -43,8 +43,8 @@
       height: 100%;
       margin: 5px;
       padding: 5px;
-      overflow: hidden;
-      resize: none;
+      resize: auto;
+      min-height: 50px;
     }
   </style>
 </head>
@@ -57,8 +57,9 @@
       <div class="flex align-left align-center">
         <button class="submit">Import config</button>
         <button class="clear">Clear import area</button>
-        <div class="message"></div>
       </div>
+
+      <div class="message">Message: </div>
 
       <textarea class="input" rows="1" placeholder="paste a config in here and hit import"></textarea>
 
@@ -69,8 +70,9 @@
       <div class="flex align-left align-center">
         <button class="submit">Export config</button>
         <button class="clear">Clear export area</button>
-        <div class="message"></div>
       </div>
+
+      <div class="message">Message: </div>
 
       <textarea class="input" rows="1" placeholder="hit export and save the contents somewhere"></textarea>
 

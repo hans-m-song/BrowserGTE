@@ -1,12 +1,7 @@
 import {Header, LogLevel, Sender} from '@util/constants';
 import {stringifyError} from '@util/functions';
-import {
-  logMessage,
-  message,
-  Message,
-  OptMessage,
-  ParseMessage,
-} from '@util/message';
+import {logMessage, message, Message} from '@util/message';
+import {ParserConfig, ParserConfigType} from './config';
 import {Parser} from './Parser';
 
 const {compose} = message(Sender.Background);
@@ -52,19 +47,22 @@ chrome.runtime.onMessage.addListener(
       try {
         switch (message.header) {
           case Header.RAW: {
-            const result = parser.process((message as ParseMessage).data);
+            const result = parser.process(message.data as string);
             sendResponse(compose(Header.PROCESSED, result));
             break;
           }
           case Header.IMPORT: {
-            const {data} = message as OptMessage;
-            parser = new Parser(data);
+            parser = new Parser(message.data as ParserConfig);
             sendResponse(compose(Header.OK));
             break;
           }
           case Header.EXPORT: {
             const data = parser.toJSON();
-            sendResponse(compose(Header.EXPORT, data));
+            const message = compose(Header.EXPORT, {
+              type: ParserConfigType.Storage,
+              ...data,
+            });
+            sendResponse(message);
             break;
           }
           default: {
