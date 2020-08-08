@@ -2,12 +2,82 @@
 
 <head>
   <title>MTE popup</title>
+  <style>
+    .flex {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .column {
+      flex-direction: column;
+    }
+
+    .spread {
+      justify-content: space-evenly;
+    }
+
+    .grow {
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 0;
+    }
+
+    .align-left {
+      align-content: flex-start;
+    }
+
+    .align-center {
+      align-items: center;
+    }
+
+    .max-width {
+      width: 100%;
+    }
+
+    button {
+      margin: 5px;
+      padding: 5px;
+    }
+
+    textarea {
+      height: 100%;
+      margin: 5px;
+      padding: 5px;
+      overflow: hidden;
+      resize: none;
+    }
+  </style>
 </head>
 
 <body>
-  <button id="import">Import config</button>
-  <button id="export">Export config</button>
-  <div id="message"></div>
+  <div id="root" class="flex spread">
+
+    <div id="import" class="flex column grow">
+
+      <div class="flex align-left align-center">
+        <button class="submit">Import config</button>
+        <button class="clear">Clear import area</button>
+        <div class="message"></div>
+      </div>
+
+      <textarea class="input" rows="1" placeholder="paste a config in here and hit import"></textarea>
+
+    </div>
+
+    <div id="export" class="flex column grow">
+
+      <div class="flex align-left align-center">
+        <button class="submit">Export config</button>
+        <button class="clear">Clear export area</button>
+        <div class="message"></div>
+      </div>
+
+      <textarea class="input" rows="1" placeholder="hit export and save the contents somewhere"></textarea>
+
+    </div>
+
+  </div>
+
   <script src="options.js"></script>
 </body>
 
