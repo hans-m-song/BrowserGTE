@@ -18,7 +18,7 @@
     {
       "matches": ["*://*.messenger.com/t/*"],
       "run_at": "document_idle",
-      "js": ["content_script.js"],
+      "js": ["content-script.js"],
       "css": ["style.css"]
     }
   ],

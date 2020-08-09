@@ -22,7 +22,7 @@ element(Section.Import, El.Submit).onclick = async () => {
   try {
     const input = element(Section.Import, El.Input);
     const data = JSON.parse(input.value);
-    const message = await send(Header.IMPORT, data);
+    const message = await send.toExtension(Header.IMPORT, data);
     logMessage(message, 'import response');
     setMessage(Section.Import, `${message.sender}: ${message.header}`);
   } catch (e) {
@@ -33,7 +33,7 @@ element(Section.Import, El.Submit).onclick = async () => {
 
 element(Section.Export, El.Submit).onclick = async () => {
   try {
-    const message = await send(Header.EXPORT);
+    const message = await send.toExtension(Header.EXPORT);
     logMessage(message, 'export response');
     const data = JSON.stringify(message.data, null, 4);
     const inputEl = element(Section.Export, El.Input);

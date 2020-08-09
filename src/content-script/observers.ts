@@ -1,6 +1,6 @@
 import {Header, SELECTORS, Sender} from '@util/constants';
 import {delay, waitForEl} from '@util/functions';
-import {message, ParseMessage} from '@util/message';
+import {message} from '@util/message';
 
 const {send} = message(Sender.ContentScript);
 
@@ -96,10 +96,10 @@ export class MessageObserver extends Observer {
     console.log('processing spans', spans);
     const spanTransformList = spans.map(async (span) => {
       await delay();
-      const response = (await send(Header.RAW, span.innerHTML)) as ParseMessage;
+      const response = await send.toExtension(Header.RAW, span.innerHTML);
       if (response.header === Header.PROCESSED) {
         console.log('applying to span', span, response);
-        span.innerHTML = response.data;
+        span.innerHTML = response.data as string;
       } else {
         console.error(
           'unhandled response type',

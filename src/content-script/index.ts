@@ -35,6 +35,7 @@ waitForEl(SELECTORS.MAIN).then(async (main) => {
 
 chrome.runtime.onMessage.addListener(
   (message: Message, _sender, sendResponse) => {
+    logMessage(message, 'received message');
     switch (message.header) {
       default: {
         logMessage(message, 'unhandled message');

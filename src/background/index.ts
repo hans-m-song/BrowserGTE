@@ -39,9 +39,11 @@ const initParser = (): Promise<Parser> =>
     }
   });
 
+initParser();
+
 chrome.runtime.onMessage.addListener(
   (message: Message, _sender, sendResponse) => {
-    initParser().then((parser) => {
+    waitForInit().then((parser) => {
       logMessage(message, 'received message');
 
       try {

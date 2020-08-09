@@ -32,39 +32,31 @@ interface Communication {
   ) => Message;
 }
 
-const toExtension = (message: Message): Promise<Message> =>
-  new Promise((resolve) =>
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) =>
-      chrome.tabs.sendMessage(tabs[0].id!, message, (response) =>
-        resolve(response),
-      ),
-    ),
-  );
-
-const toContentScript = (message: Message): Promise<Message> =>
-  new Promise((resolve) =>
-    chrome.runtime.sendMessage(message, (response) => resolve(response)),
-  );
-
 export const message = (sender: Sender) => {
   const compose: Communication['compose'] = (header, data, level) =>
     composeMessage(header, sender, data, level);
 
-  const send: Communication['send'] = (header, data, level) => {
+  const toContentScript: Communication['send'] = (header, data, level) => {
     const message = composeMessage(header, sender, data, level);
+    return new Promise((resolve) =>
+      chrome.tabs.query({active: true, currentWindow: true}, (tabs) =>
+        chrome.tabs.sendMessage(tabs[0].id!, message, (response) =>
+          resolve(response),
+        ),
+      ),
+    );
+  };
 
-    switch (sender) {
-      case Sender.Options:
-      case Sender.Background:
-        return toContentScript(message);
-      case Sender.ContentScript:
-        return toExtension(message);
-    }
+  const toExtension: Communication['send'] = (header, data, level) => {
+    const message = composeMessage(header, sender, data, level);
+    return new Promise((resolve) =>
+      chrome.runtime.sendMessage(message, (response) => resolve(response)),
+    );
   };
 
   return {
     compose,
-    send,
+    send: {toContentScript, toExtension},
   };
 };
 
