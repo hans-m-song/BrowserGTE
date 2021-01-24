@@ -1,8 +1,9 @@
 export const SELECTORS = {
   MAIN: 'div[role=main]',
   CONVERSATIONS: 'div[aria-label=Conversations]',
-  MESSAGES: 'div[aria-label=Messages] > div[id^=js_]',
-  SPANS: '[data-tooltip-content] > div > span',
+  MESSAGES: 'div[aria-label=Messages]',
+  SPANS:
+    '[data-testid="messenger_incoming_text_row"], [data-testid="outgoing_message"]',
 };
 
 export enum Sender {
