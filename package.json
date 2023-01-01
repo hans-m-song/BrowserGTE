@@ -37,7 +37,7 @@
     "browserify": "^16.5.0",
     "concurrently": "^5.2.0",
     "pathmodify": "^0.5.0",
-    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths": "^3.10.1",
     "tsify": "^5.0.0",
     "watchify": "^3.11.1"
   }
